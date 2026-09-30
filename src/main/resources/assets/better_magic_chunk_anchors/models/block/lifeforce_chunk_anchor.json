@@ -1,0 +1,4 @@
+{
+  "parent": "better_magic_chunk_anchors:block/chunk_anchor_base",
+  "textures": {"rune": "minecraft:block/redstone_ore"}
+}

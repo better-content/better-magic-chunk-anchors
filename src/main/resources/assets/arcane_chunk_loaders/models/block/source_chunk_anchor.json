@@ -1,4 +1,0 @@
-{
-  "parent": "arcane_chunk_loaders:block/chunk_anchor_base",
-  "textures": {"rune": "minecraft:block/amethyst_block"}
-}

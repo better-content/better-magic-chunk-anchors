@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "active=false": {"model": "better_magic_chunk_anchors:block/flux_chunk_anchor"},
+    "active=true": {"model": "better_magic_chunk_anchors:block/flux_chunk_anchor"}
+  }
+}

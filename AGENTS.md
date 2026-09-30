@@ -2,10 +2,10 @@
 
 ## Scope
 
-This repository contains the Better Content-owned Forge mod **Arcane Chunk Loaders**.
+This repository contains the Better Content-owned Forge mod **Better Magic Chunk Anchors**.
 
-- Canonical mod ID: `arcane_chunk_loaders`
-- Canonical artifact: `arcane-chunk-loaders-<version>.jar`
+- Canonical mod ID: `better_magic_chunk_anchors`
+- Canonical artifact: `better-magic-chunk-anchors-<version>.jar`
 - Maven group: `com.bettercontent`
 - Java runtime: 17
 - Minecraft/Forge baseline: 1.20.1 / 47.4.13

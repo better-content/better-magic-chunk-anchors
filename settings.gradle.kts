@@ -6,4 +6,4 @@ pluginManagement {
     }
 }
 
-rootProject.name = "arcane-chunk-loaders"
+rootProject.name = "better-magic-chunk-anchors"

@@ -1,0 +1,15 @@
+{
+  "replace": false,
+  "values": [
+    { "id": "better_spirit_commerce:mobility_spirit", "required": false },
+    { "id": "better_spirit_commerce:endurance_spirit", "required": false },
+    { "id": "better_spirit_commerce:work_spirit", "required": false },
+    { "id": "better_spirit_commerce:robustness_spirit", "required": false },
+    "malum:eldritch_spirit",
+    { "id": "better_spirit_commerce:impact_spirit", "required": false },
+    { "id": "better_spirit_commerce:renewal_spirit", "required": false },
+    "malum:umbral_spirit",
+    { "id": "better_spirit_commerce:control_spirit", "required": false },
+    { "id": "better_spirit_commerce:tempo_spirit", "required": false }
+  ]
+}
