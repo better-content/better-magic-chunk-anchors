@@ -1,5 +1,11 @@
 # Better Magic Chunk Anchors
 
+## Scope and authority
+
+This repository owns its mod-specific behavior and authoring inputs. Read [local instructions](AGENTS.md)
+and the [shared documentation/policy index](../../better-content-modpack/docs/README.md).
+
+
 Pack-owned Forge 1.20.1 mod providing seven magic-gated, power-buffered chunk anchors. Each active anchor keeps its centered 3x3 chunk area fully ticking and exposes an operator registry/teleport command.
 
 Build the runtime artifact with `gradle assemble`; the staged `build/libs/better-magic-chunk-anchors-0.1.0.jar` is the reobfuscated jar.
@@ -21,4 +27,4 @@ Seven generated cases exercise each variant's real block entity and public power
 
 The remaining tests cover the actual Ars SourceManager payment, nine fully ticking Forge tickets across acquisition, starvation, redstone disable/re-enable and removal, and saved ownership/block identity round-trips. Ticket assertions inspect Forge's owned records by mod ID and block position, independently of chunks held open by the GameTest framework. Lifecycle coverage uses the shared ticket controller through a Flux anchor; ownership serialization is a save/load round-trip within one server process.
 
-Each server run uses a fresh `build/gametest/<run-token>/` directory and retains its world, logs, and `execution.json`. The reviewed `gametest/profiles/full.txt` must exactly match runtime discovery and successful completion. Missing, stale, empty, partial, duplicate, or failed evidence fails the task. Preserve failed run directories for diagnosis; `clean` removes build evidence.
+During the active task, each server run keeps a fresh `build/gametest/<run-token>/` world, logs and `execution.json`. The reviewed `gametest/profiles/full.txt` must exactly match runtime discovery and successful completion. Missing, stale, empty, partial, duplicate, or failed evidence fails the task. Inspect failed directories during diagnosis, then dispose of all results/worlds/builds/caches at handoff under the [shared policy](../../better-content-modpack/docs/policies/generated-data.md).
