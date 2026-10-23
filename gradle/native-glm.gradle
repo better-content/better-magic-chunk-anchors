@@ -84,7 +84,9 @@ tasks.matching { it.name == 'runGameTestServer' }.configureEach {
         if (proof.schema != 'bc.anchors.fixture_glm_load_proof.v1' || proof.attempt != run.name ||
             proof.orderedIds?.size() != 16 || proof.effectiveDefinitions?.size() != 16 || proof.actualDecodedCount != 16 ||
             proof.actualCodecIdentitiesAndOrder != true || proof.arsRegisteredDecoderInputImplementationOrder != true ||
-            proof.memoizedDirectIdentityTypeCount != 8 || proof.originalDirectParseBrackets != 16 ||
+            proof.memoizedDirectIdentityTypeCount != 7 || proof.nonArsOriginalDispatchTypeCount != 8 ||
+            proof.originalRegisteredDispatchRows != 16 || proof.allRowsOriginalRegisteredDispatchAndRootReturn != true ||
+            proof.originalDirectParseBrackets != 16 ||
             proof.selectedArsRegistryDecoderReturns != 1 || proof.originalArsRootBodyReturns != 1 ||
             proof.originalApplyReturnsProved < 1 || proof.originalApplyReturnsProved > 4 ||
             proof.requiredFixedTopSelected != true || proof.scalarOnly != true || proof.gameplayEffectsAccepted != false)

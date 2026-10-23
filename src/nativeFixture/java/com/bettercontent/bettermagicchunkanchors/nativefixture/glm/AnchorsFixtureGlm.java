@@ -237,6 +237,7 @@ public final class AnchorsFixtureGlm {
                 "Actual registered dispatch codec implementation differs");
             boolean arsProved = false;
             Set<String> otherTypesProved = new HashSet<>();
+            Set<String> memoizedTypesProved = new HashSet<>();
             for (int i = 0; i < rows.size(); i++) {
                 ResourceLocation key = new ResourceLocation(rows.get(i).getAsJsonObject().get("codec").getAsString());
                 var registered = registry.getValue(key);
@@ -261,13 +262,17 @@ public final class AnchorsFixtureGlm {
                     if (!key.toString().equals("goety:add_loot")) {
                         var codec = ((net.minecraftforge.common.loot.IGlobalLootModifier) loaded.get(i)).codec();
                         require(codec != null && registered == codec && key.equals(registry.getKey(codec)), "Actual memoized codec identity/order differs");
+                        memoizedTypesProved.add(key.toString());
                     }
                     otherTypesProved.add(key.toString());
                 }
             }
-            require(arsProved && otherTypesProved.size() == 8, "Incomplete Ars/eight other original dispatch type proofs");
+            require(arsProved && otherTypesProved.size() == 8 && memoizedTypesProved.size() == 7,
+                "Incomplete Ars/eight original dispatch/seven memoized identity type proofs");
             proof.addProperty("arsRegisteredDecoderInputImplementationOrder", arsProved);
             proof.addProperty("nonArsOriginalDispatchTypeCount", otherTypesProved.size());
+            proof.addProperty("memoizedDirectIdentityTypeCount", memoizedTypesProved.size());
+            proof.addProperty("originalRegisteredDispatchRows", rows.size());
             proof.addProperty("allRowsOriginalRegisteredDispatchAndRootReturn", true);
             proof.addProperty("originalDirectParseBrackets", dispatchProof.originalParseBrackets());
             proof.addProperty("selectedArsRegistryDecoderReturns", dispatchProof.selectedArsDecoderReturns());
