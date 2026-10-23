@@ -119,3 +119,12 @@ apply(from = "gradle/gametest-evidence.gradle")
 apply(from = "gradle/native-gametest-fixture.gradle")
 apply(from = "gradle/native-canonical-policy.gradle")
 apply(from = "gradle/native-glm.gradle")
+
+// Audit every runtime source set, including nonshipping native hooks; exclude only declared JUnit controls.
+tasks.named<Test>("test") {
+    val runtimeSets = sourceSets.filter { it.name !in setOf("test", "nativeFixtureTest") }
+    systemProperty("bc.anchors.reflection.sourceRoots", runtimeSets.flatMap { it.allSource.srcDirs }
+        .joinToString(System.getProperty("path.separator")) { it.absolutePath })
+    systemProperty("bc.anchors.reflection.classRoots", runtimeSets.flatMap { it.output.classesDirs.files }
+        .joinToString(System.getProperty("path.separator")) { it.absolutePath })
+}
