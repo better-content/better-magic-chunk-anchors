@@ -1,0 +1,405 @@
+{
+  "schema": "bc.anchors.fixture_glm_scope.v1",
+  "description": "Authored exact Anchors declared raw graph and inspected B-local registry/decoder/order scope; not native acceptance.",
+  "profiles": {
+    "anchors": {
+      "originals": [
+        {
+          "coordinate": "com.simibubi.create:create-1.20.1:6.0.8-291:slim",
+          "sha256": "ba2af6811a8591ac73050b34d6d8e2d11598bab6e4ee90b3eb163f4351dca304",
+          "root_pin": null
+        },
+        {
+          "coordinate": "net.createmod.ponder:Ponder-Forge-1.20.1:1.0.91",
+          "sha256": "86e6b64372aba6d9c56f2c35725ea26d8febf2c75eed9950566e7f2849443b34",
+          "root_pin": null
+        },
+        {
+          "coordinate": "com.tterrag.registrate:Registrate:MC1.20-1.3.3",
+          "sha256": "226862d4638b77273f4627fbac871aa0b3af584dde377f4ce2cb0c7cc228cf00",
+          "root_pin": null
+        },
+        {
+          "coordinate": "io.github.llamalad7:mixinextras-forge:0.5.4",
+          "sha256": "7922899a121a27f63a69a9ffe57470d8719cc52d239dfa9408e15d32a7b4c264",
+          "root_pin": null
+        },
+        {
+          "coordinate": "dev.engine-room.flywheel:flywheel-forge-1.20.1:1.0.5",
+          "sha256": "316ca250f19244956b5f0cd75329309ea65a77b4b8da854389b6a9222e7f427c",
+          "root_pin": null
+        },
+        {
+          "coordinate": "curse.maven:ars-nouveau-401955:6688854",
+          "sha256": "1f1debc282a0c379c1141f2840ea294eede6f6b544c589663f40bbe17b59a1af",
+          "root_pin": "mods/ars-nouveau.pw.toml"
+        },
+        {
+          "coordinate": "curse.maven:pneumaticcraft-repressurized-281849:7307654",
+          "sha256": "d33c6d8ca709ba9b5b238b8919a06c2b2dc3903535f452aac965a15d01713d43",
+          "root_pin": "mods/pneumaticcraft-repressurized.pw.toml"
+        },
+        {
+          "coordinate": "curse.maven:blood-magic-224791:7956981",
+          "sha256": "e88af6d512e522a47286fc87015ed290c5d41be7a51c3ef59a391e85bc1fd4a0",
+          "root_pin": "mods/blood-magic.pw.toml"
+        },
+        {
+          "coordinate": "curse.maven:goety-586095:8087429",
+          "sha256": "2d1a9c2621980af2425ebbb1fde62b6a12ce90f4733120d953a2af2b5cbf28a9",
+          "root_pin": "mods/goety.pw.toml"
+        },
+        {
+          "coordinate": "curse.maven:malum-484064:6646111",
+          "sha256": "ceda6ce4cc19de21ff6c21a732d8f9270ecc83cdae69027b13aaa24b536307f8",
+          "root_pin": null
+        },
+        {
+          "coordinate": "curse.maven:jeed-532286:6172935",
+          "sha256": "841dee59c98c1b490073866a47dbd77f13125d425a8c6a8e850cf8c43e699a83",
+          "root_pin": null
+        },
+        {
+          "coordinate": "curse.maven:power-grid-1321420:7714613",
+          "sha256": "390f8d34b8bdf4c55ed198f51e03a37ceb74e717cfdebdff315c450187f74b3a",
+          "root_pin": null
+        },
+        {
+          "coordinate": "curse.maven:patchouli-306770:7731017",
+          "sha256": "05f7b5d52f6b8f0fd7f8b4822fa07a192d1394d83a264309c9d221d6d4fd21c5",
+          "root_pin": null
+        },
+        {
+          "coordinate": "curse.maven:curios-309927:6418456",
+          "sha256": "1e817919a35b37cf30524aaec73f0ca5130452f23f168f844854df282eb8e51f",
+          "root_pin": null
+        },
+        {
+          "coordinate": "curse.maven:geckolib-388172:7553267",
+          "sha256": "8b90e11871a58b63816e99c529e6c932bc88e6beb3fec97ad618e22217df3250",
+          "root_pin": null
+        },
+        {
+          "coordinate": "curse.maven:architectury-api-419699:5137938",
+          "sha256": "218b471d0b8a1f6cda14cfc1beb9eeb0df54304500acc6c5613d9b88ec65d9af",
+          "root_pin": null
+        },
+        {
+          "coordinate": "curse.maven:lodestone-616457:6213794",
+          "sha256": "e9f8b7bc70ba99d97005f2acee2061b149785fbae3c1e37db08c79197bcc7c2d",
+          "root_pin": null
+        },
+        {
+          "coordinate": "curse.maven:emi-580555:8081375",
+          "sha256": "92784dcf5222d72983a420c90f2e9240468ee0fece96f757c82d7884b6cbdb72",
+          "root_pin": null
+        }
+      ],
+      "ordered_ids": [
+        "ars_nouveau:dungeon_loot",
+        "bloodmagic:fortune",
+        "bloodmagic:looting",
+        "bloodmagic:silk_touch_bamboo",
+        "bloodmagic:smelt",
+        "bloodmagic:voiding",
+        "goety:cross_pottery_sherd_dig",
+        "goety:dead_pottery_sherd_dig",
+        "goety:forbidden_piece_dig",
+        "goety:haunt_pottery_sherd_dig",
+        "goety:instant_pick",
+        "goety:night_pottery_sherd_dig",
+        "goety:occult_fabric_dig",
+        "goety:soul_pottery_sherd_dig",
+        "goety:spirit_fabric_dig",
+        "pneumaticcraft:dungeon_loot"
+      ],
+      "explicit_exclusions": [
+        "goety:chill_fabric_dig",
+        "goety:dark_fabric_dig",
+        "goety:gale_fabric_dig",
+        "goety:jade_dig"
+      ],
+      "typed_ids": [
+        "condition|forge:loot_table_id",
+        "condition|minecraft:any_of",
+        "condition|minecraft:entity_properties",
+        "condition|minecraft:match_tool",
+        "type|ars_nouveau:dungeon_loot",
+        "type|bloodmagic:fortune",
+        "type|bloodmagic:looting",
+        "type|bloodmagic:silk_touch_bamboo",
+        "type|bloodmagic:smelt",
+        "type|bloodmagic:voiding",
+        "type|goety:add_loot",
+        "type|goety:instant_pick",
+        "type|pneumaticcraft:dungeon_loot"
+      ],
+      "expected_count": 16
+    }
+  },
+  "outer_codecs": {
+    "ars_nouveau:dungeon_loot": {
+      "implementation_class": "com.hollingsworth.arsnouveau.api.loot.DungeonLootEnhancerModifier",
+      "registration_witness_class": "com.hollingsworth.arsnouveau.setup.registry.LootRegistry"
+    },
+    "pneumaticcraft:dungeon_loot": {
+      "implementation_class": "me.desht.pneumaticcraft.common.loot.PNCDungeonLootModifier",
+      "registration_witness_class": "me.desht.pneumaticcraft.common.core.ModLootModifiers"
+    },
+    "goety:add_loot": {
+      "implementation_class": "com.Polarice3.Goety.common.loot.AddItemLootModifier",
+      "registration_witness_class": "com.Polarice3.Goety.init.ModLootModifier"
+    },
+    "goety:instant_pick": {
+      "implementation_class": "com.Polarice3.Goety.init.ModLootModifier$InstantPickModifier",
+      "registration_witness_class": "com.Polarice3.Goety.init.ModLootModifier"
+    },
+    "bloodmagic:fortune": {
+      "implementation_class": "wayoftime.bloodmagic.loot.GlobalLootModifier$FortuneModifier",
+      "registration_witness_class": "wayoftime.bloodmagic.loot.GlobalLootModifier"
+    },
+    "bloodmagic:looting": {
+      "implementation_class": "wayoftime.bloodmagic.loot.GlobalLootModifier$LootingModifier",
+      "registration_witness_class": "wayoftime.bloodmagic.loot.GlobalLootModifier"
+    },
+    "bloodmagic:silk_touch_bamboo": {
+      "implementation_class": "wayoftime.bloodmagic.loot.GlobalLootModifier$SilkTouchTestModifier",
+      "registration_witness_class": "wayoftime.bloodmagic.loot.GlobalLootModifier"
+    },
+    "bloodmagic:smelt": {
+      "implementation_class": "wayoftime.bloodmagic.loot.GlobalLootModifier$SmeltingModifier",
+      "registration_witness_class": "wayoftime.bloodmagic.loot.GlobalLootModifier"
+    },
+    "bloodmagic:voiding": {
+      "implementation_class": "wayoftime.bloodmagic.loot.GlobalLootModifier$VoidingModifier",
+      "registration_witness_class": "wayoftime.bloodmagic.loot.GlobalLootModifier"
+    }
+  },
+  "typed_registration_owners": {
+    "condition|forge:loot_table_id": {
+      "registration_witness_class": "net.minecraftforge.common.ForgeMod"
+    },
+    "condition|minecraft:any_of": {
+      "registration_witness_class": "net.minecraft.world.level.storage.loot.predicates.LootItemConditions"
+    },
+    "condition|minecraft:entity_properties": {
+      "registration_witness_class": "net.minecraft.world.level.storage.loot.predicates.LootItemConditions"
+    },
+    "condition|minecraft:match_tool": {
+      "registration_witness_class": "net.minecraft.world.level.storage.loot.predicates.LootItemConditions"
+    },
+    "type|ars_nouveau:dungeon_loot": {
+      "registration_witness_class": "com.hollingsworth.arsnouveau.setup.registry.LootRegistry"
+    },
+    "type|bloodmagic:fortune": {
+      "registration_witness_class": "wayoftime.bloodmagic.loot.GlobalLootModifier"
+    },
+    "type|bloodmagic:looting": {
+      "registration_witness_class": "wayoftime.bloodmagic.loot.GlobalLootModifier"
+    },
+    "type|bloodmagic:silk_touch_bamboo": {
+      "registration_witness_class": "wayoftime.bloodmagic.loot.GlobalLootModifier"
+    },
+    "type|bloodmagic:smelt": {
+      "registration_witness_class": "wayoftime.bloodmagic.loot.GlobalLootModifier"
+    },
+    "type|bloodmagic:voiding": {
+      "registration_witness_class": "wayoftime.bloodmagic.loot.GlobalLootModifier"
+    },
+    "type|goety:add_loot": {
+      "registration_witness_class": "com.Polarice3.Goety.init.ModLootModifier"
+    },
+    "type|goety:instant_pick": {
+      "registration_witness_class": "com.Polarice3.Goety.init.ModLootModifier"
+    },
+    "type|pneumaticcraft:dungeon_loot": {
+      "registration_witness_class": "me.desht.pneumaticcraft.common.core.ModLootModifiers"
+    }
+  },
+  "original_class_witnesses": {
+    "com.Polarice3.Goety.Goety": {
+      "coordinate": "curse.maven:goety-586095:8087429",
+      "sha256": "e32705644eb213b67a325809df29e478f573b77554ffcce8fac396e8651c38b9"
+    },
+    "com.Polarice3.Goety.common.loot.AddItemLootModifier": {
+      "coordinate": "curse.maven:goety-586095:8087429",
+      "sha256": "8b7407f70e863b17e705536a9fde3180aa3eb9b74a23251f10fff0e61c803208"
+    },
+    "com.Polarice3.Goety.init.ModLootModifier": {
+      "coordinate": "curse.maven:goety-586095:8087429",
+      "sha256": "cd83b165b05d92d9e8273511e90541da8878a8be7cc45f46dcee555cde32f549"
+    },
+    "com.Polarice3.Goety.init.ModLootModifier$InstantPickModifier": {
+      "coordinate": "curse.maven:goety-586095:8087429",
+      "sha256": "880e40ec107eaadebfcaa73f9b5cafb57a6f5731ec93503fbabf49ca50e3988f"
+    },
+    "com.google.common.collect.ImmutableMap$Builder": {
+      "coordinate": "actualGuavaSdk",
+      "sha256": "291aadf7fe598bd153517439a63b0e7e890b9dd7757c7e9558f0cb6d072bfd7c"
+    },
+    "com.google.common.collect.ImmutableMapValues": {
+      "coordinate": "actualGuavaSdk",
+      "sha256": "758ec64570c60b29ca065a7f56bdf5a9971100edc65a0d39d7f2b3bedc055dfb"
+    },
+    "com.google.common.collect.ImmutableMapValues$1": {
+      "coordinate": "actualGuavaSdk",
+      "sha256": "1a6e0aac848b61ae406a11ddf85c11b2307f3d8fb56f94ec3dad30d359ad6b14"
+    },
+    "com.google.common.collect.RegularImmutableMap": {
+      "coordinate": "actualGuavaSdk",
+      "sha256": "935bccf17a8950d655dc07cb623a5e50f098076d7175696fc5cb99568552da7e"
+    },
+    "com.hollingsworth.arsnouveau.ArsNouveau": {
+      "coordinate": "curse.maven:ars-nouveau-401955:6688854",
+      "sha256": "3a5a72a91b9a4e6525d13d3e4e2fc1615684f82d71b00d12feb5d9a29425143a"
+    },
+    "com.hollingsworth.arsnouveau.api.loot.DungeonLootEnhancerModifier": {
+      "coordinate": "curse.maven:ars-nouveau-401955:6688854",
+      "sha256": "300bedfd7146437f916ca35ad4914a9ef4a429737d297950dfb4c021a8340dd8"
+    },
+    "com.hollingsworth.arsnouveau.setup.ModSetup": {
+      "coordinate": "curse.maven:ars-nouveau-401955:6688854",
+      "sha256": "a2de50c71c2d6536d1d0f7cbc43e20b347bd1f4f787e37205d9b281d320b6805"
+    },
+    "com.hollingsworth.arsnouveau.setup.registry.LootRegistry": {
+      "coordinate": "curse.maven:ars-nouveau-401955:6688854",
+      "sha256": "20c716a2754c23c83cdde0c4b4dfd2206eb9b45c5ffa710819a65310bf08b47a"
+    },
+    "com.mojang.serialization.Codec": {
+      "coordinate": "actualDfuSdk",
+      "sha256": "e3397a5528925def3d0f68a3057ae38ebf9cd47ac7c1023d89f4dd8b8894917c"
+    },
+    "com.mojang.serialization.MapCodec": {
+      "coordinate": "actualDfuSdk",
+      "sha256": "aa3e0984fe95a0b05805a6816779e014412e1fd9eba6f8a5ae491cbbc5681c91"
+    },
+    "com.mojang.serialization.codecs.KeyDispatchCodec": {
+      "coordinate": "actualDfuSdk",
+      "sha256": "dbf3493c76bbfaca66e6dee75bf67f6d77395254e380f5d1997a3f648e667472"
+    },
+    "com.mojang.serialization.codecs.RecordCodecBuilder": {
+      "coordinate": "actualDfuSdk",
+      "sha256": "2e9444a76586d507872d354f6e00f6c4bde6d897ca4e8d5d2cd73928d9978ed8"
+    },
+    "me.desht.pneumaticcraft.PneumaticCraftRepressurized": {
+      "coordinate": "curse.maven:pneumaticcraft-repressurized-281849:7307654",
+      "sha256": "778468f7732fe09711ae407b35c7b60ff2a8d728374829892b00b28aadfa0a1b"
+    },
+    "me.desht.pneumaticcraft.common.core.ModLootModifiers": {
+      "coordinate": "curse.maven:pneumaticcraft-repressurized-281849:7307654",
+      "sha256": "f9e9f9f35b00b5f34d642b5ad2a4ac85df7a77fd5907d94da8400ccc62ae0f7f"
+    },
+    "me.desht.pneumaticcraft.common.loot.PNCDungeonLootModifier": {
+      "coordinate": "curse.maven:pneumaticcraft-repressurized-281849:7307654",
+      "sha256": "08cb90f6ca939ff97bf1bc1e485be3969bbddf2eef5f59f42ee6ac663d9f9878"
+    },
+    "net.minecraft.world.level.storage.loot.predicates.AnyOfCondition$Serializer": {
+      "coordinate": "mappedForgeSdk",
+      "sha256": "e025d5c11a312c4ba758d97b903d88367e480283c1dcc32d5372e3fb4d8a68f7"
+    },
+    "net.minecraft.world.level.storage.loot.predicates.LootItemConditions": {
+      "coordinate": "mappedForgeSdk",
+      "sha256": "8d300839be40e1aac73839d136b5ed023d71accede2aaef8f77a5eae00625b30"
+    },
+    "net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition$Serializer": {
+      "coordinate": "mappedForgeSdk",
+      "sha256": "a14b2e3cb85629764ae1b1a55304c7cec1ba7f1d67933904cb988185c0c3356d"
+    },
+    "net.minecraft.world.level.storage.loot.predicates.MatchTool$Serializer": {
+      "coordinate": "mappedForgeSdk",
+      "sha256": "df1bfd6499cc71741d08b165e30809dfe4f818570b12a584cc1f28df5709546a"
+    },
+    "net.minecraftforge.common.ForgeMod": {
+      "coordinate": "mappedForgeSdk",
+      "sha256": "9bc38eef8f407c661b5b6aa77c64d76cbcbc2fa3d84716b76676159f30c94034"
+    },
+    "net.minecraftforge.common.loot.IGlobalLootModifier": {
+      "coordinate": "mappedForgeSdk",
+      "sha256": "6a07c083239f982b9779006aa68d31c72591204ad164771f39c2af4cec681030"
+    },
+    "net.minecraftforge.common.loot.LootModifierManager": {
+      "coordinate": "mappedForgeSdk",
+      "sha256": "189fc5d8f28c881a070b56df6d0ce8dffd164010d40838b42f173407bd345a84"
+    },
+    "net.minecraftforge.common.loot.LootTableIdCondition": {
+      "coordinate": "mappedForgeSdk",
+      "sha256": "fac59a9dd17fb5e7a9f1b2089f52d58f4dbb27a9247aa478d9d0aededc0c8e88"
+    },
+    "net.minecraftforge.common.loot.LootTableIdCondition$Serializer": {
+      "coordinate": "mappedForgeSdk",
+      "sha256": "53fcb58c43f0b5942e0dcc481bd60a585b64ad1caae2b6d7559b2c971677eafd"
+    },
+    "net.minecraftforge.registries.DeferredRegister": {
+      "coordinate": "mappedForgeSdk",
+      "sha256": "4f75b3b2bdbaf32e68a5286a504bd0d5c823a02937447838e312be28366bfbd0"
+    },
+    "net.minecraftforge.registries.ForgeRegistry": {
+      "coordinate": "mappedForgeSdk",
+      "sha256": "13bd124d9cb8733eed11812a1228a0189a9cfa49837c866fc9dff14c6de77606"
+    },
+    "net.minecraftforge.registries.RegistryObject": {
+      "coordinate": "mappedForgeSdk",
+      "sha256": "846e9dd59e357a1e5d8d74f4fbd267062976c67f53b8e92f844120f49c254a18"
+    },
+    "wayoftime.bloodmagic.BloodMagic": {
+      "coordinate": "curse.maven:blood-magic-224791:7956981",
+      "sha256": "cc3e5f06620ae2566ca25fdf94a3873d45ba566ac3e8590f9ca6cf48aa962c9a"
+    },
+    "wayoftime.bloodmagic.loot.GlobalLootModifier": {
+      "coordinate": "curse.maven:blood-magic-224791:7956981",
+      "sha256": "fa64f730fe86823a8d74016fb7bf445522c92cec37434972032066c3216f159b"
+    },
+    "wayoftime.bloodmagic.loot.GlobalLootModifier$FortuneModifier": {
+      "coordinate": "curse.maven:blood-magic-224791:7956981",
+      "sha256": "34dafbd6153eacb034dd998e11b36fb276dd8a807546caccd2364f8849fd9fe1"
+    },
+    "wayoftime.bloodmagic.loot.GlobalLootModifier$LootingModifier": {
+      "coordinate": "curse.maven:blood-magic-224791:7956981",
+      "sha256": "2b1572728b28c25118c600516568074ef14e40dc8b4c88ee6876ea1d9c40923c"
+    },
+    "wayoftime.bloodmagic.loot.GlobalLootModifier$SilkTouchTestModifier": {
+      "coordinate": "curse.maven:blood-magic-224791:7956981",
+      "sha256": "56a393b404d7e4efdf13b290066d9c20e512c354d2362f30959963d34034cfec"
+    },
+    "wayoftime.bloodmagic.loot.GlobalLootModifier$SmeltingModifier": {
+      "coordinate": "curse.maven:blood-magic-224791:7956981",
+      "sha256": "e3387d4e6276ac8430736da6b8bc0666ed87cafaa78d38d0b9f3e34d82e2c45b"
+    },
+    "wayoftime.bloodmagic.loot.GlobalLootModifier$VoidingModifier": {
+      "coordinate": "curse.maven:blood-magic-224791:7956981",
+      "sha256": "3dce68e06b6ff6447ba81c5ba1a361baf70303be36bf797e14db40b04574154a"
+    }
+  },
+  "canonical_Root_index_sha256": "b818c7778ba162aac2efa6ef5d30ec6c4fb2d687115c6a3e017213e13967fc60",
+  "runtime_class_witnesses": {
+    "com.mojang.serialization.MapCodec$MapCodecCodec": "d93dce192f408cc96859d964bd8f69f1e8f232c8b2f526e367fea81ff9fe9d7a",
+    "com.mojang.serialization.Decoder": "0dca86764cdfda2adebfa9fc47d0cc23277978e0a11d9ddf92090bfc59c6b45f",
+    "net.minecraftforge.registries.DeferredRegister$EventDispatcher": "794e9cc089ff210e52449da4ae8c9c869e1c57fa1e68cca944e5c5ed5d00dc06",
+    "net.minecraftforge.registries.RegisterEvent": "eaa41c0fb3b72f4e82d5a58fdfc2aeacc9e5f4e9083e8811eead7766a9984dbf",
+    "net.minecraft.util.ExtraCodecs": "2e6d5781c4bff7457be2da10c2be63886c874b341439fc9c27c2dcc1f0dee7f0",
+    "net.minecraft.util.ExtraCodecs$LazyInitializedCodec": "38b0cefa461ad39b8dc2ea01da51767e8a23c905ff13dc1a7804636289457391",
+    "net.minecraftforge.registries.ForgeRegistry$RegistryCodec": "0e32a2fbcb251f1e9307879cd6e3bfafff4fe6754a8c4ae8f42f6ce2d2f040bd",
+    "com.google.common.collect.RegularImmutableMap$Values": "7b0265de88226a3c114daad26bf5bb7bfd1b03b3b2208bf8085fb379b761a573",
+    "com.google.common.collect.ImmutableList": "c95324d7fe0320971e1b89a8286d49211e45624b63612d2e2e1b7628dbdac1ef",
+    "net.minecraftforge.common.loot.LootModifierManager": "189fc5d8f28c881a070b56df6d0ce8dffd164010d40838b42f173407bd345a84",
+    "net.minecraftforge.common.loot.IGlobalLootModifier": "6a07c083239f982b9779006aa68d31c72591204ad164771f39c2af4cec681030",
+    "net.minecraftforge.registries.ForgeRegistry": "13bd124d9cb8733eed11812a1228a0189a9cfa49837c866fc9dff14c6de77606",
+    "net.minecraftforge.registries.RegistryObject": "846e9dd59e357a1e5d8d74f4fbd267062976c67f53b8e92f844120f49c254a18",
+    "com.mojang.serialization.Codec": "e3397a5528925def3d0f68a3057ae38ebf9cd47ac7c1023d89f4dd8b8894917c",
+    "com.mojang.serialization.MapCodec": "aa3e0984fe95a0b05805a6816779e014412e1fd9eba6f8a5ae491cbbc5681c91",
+    "com.mojang.serialization.codecs.RecordCodecBuilder": "2e9444a76586d507872d354f6e00f6c4bde6d897ca4e8d5d2cd73928d9978ed8",
+    "com.mojang.serialization.codecs.KeyDispatchCodec": "dbf3493c76bbfaca66e6dee75bf67f6d77395254e380f5d1997a3f648e667472",
+    "com.google.common.collect.ImmutableMap$Builder": "291aadf7fe598bd153517439a63b0e7e890b9dd7757c7e9558f0cb6d072bfd7c",
+    "com.google.common.collect.RegularImmutableMap": "935bccf17a8950d655dc07cb623a5e50f098076d7175696fc5cb99568552da7e",
+    "com.google.common.collect.ImmutableMapValues": "758ec64570c60b29ca065a7f56bdf5a9971100edc65a0d39d7f2b3bedc055dfb",
+    "com.google.common.collect.ImmutableMapValues$1": "1a6e0aac848b61ae406a11ddf85c11b2307f3d8fb56f94ec3dad30d359ad6b14",
+    "com.hollingsworth.arsnouveau.setup.registry.LootRegistry": "20c716a2754c23c83cdde0c4b4dfd2206eb9b45c5ffa710819a65310bf08b47a",
+    "com.hollingsworth.arsnouveau.api.loot.DungeonLootEnhancerModifier": "300bedfd7146437f916ca35ad4914a9ef4a429737d297950dfb4c021a8340dd8"
+  },
+  "ars_only_nonmemoized_codec": {
+    "key": "ars_nouveau:dungeon_loot",
+    "registered_public_field": "com.hollingsworth.arsnouveau.setup.registry.LootRegistry.STRUCTURE_MODDED_LOOT_IMPORTER",
+    "observer_must_not_call_Ars_codec": true,
+    "requires_pinned_registered_dispatch_and_actual_input_body_and_loaded_implementation_order": true
+  }
+}

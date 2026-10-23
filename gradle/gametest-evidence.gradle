@@ -32,7 +32,8 @@ def validateExecution = { File reportFile, List<String> expected, String token -
 
 tasks.matching { it.name == 'runGameTestServer' }.configureEach {
     doFirst {
-        java.nio.file.Files.deleteIfExists(executionReport.get().asFile.toPath())
+        if (executionReport.get().asFile.exists())
+            throw new GradleException('Refusing existing/partial execution evidence; retained unchanged')
         copy {
             from(file('src/main/resources/gameteststructures').isDirectory() ? file('src/main/resources/gameteststructures') : file('gameteststructures'))
             into(runDirectory.get().dir('gameteststructures'))
@@ -49,7 +50,7 @@ tasks.matching { it.name == 'runGameTestServer' }.configureEach {
 tasks.register('verifyGameTestEvidenceGuard') {
     group = 'verification'
     doLast {
-        def fixture = layout.buildDirectory.file('gametest-guard-fixtures/execution.json').get().asFile
+        def fixture = layout.buildDirectory.file('gametest-guard-fixtures/' + UUID.randomUUID() + '/execution.json').get().asFile
         fixture.parentFile.mkdirs()
         def valid = [profile: 'full', run_token: 'current', finished: true,
                      registered: ['required'], results: [[id: 'required', status: 'passed']]]
@@ -63,15 +64,16 @@ tasks.register('verifyGameTestEvidenceGuard') {
             valid + [results: [[id: 'required', status: 'passed'], [id: 'required', status: 'passed']]],
             valid + [registered: [], results: []]
         ].collect { groovy.json.JsonOutput.toJson(it) } + ['{"profile":']
-        invalid.each { payload ->
-            fixture.text = payload
+        invalid.eachWithIndex { payload, index ->
+            def invalidFixture = new File(fixture.parentFile, 'invalid-' + index + '.json')
+            invalidFixture.text = payload
             boolean rejected = false
-            try { validateExecution(fixture, ['required'], 'current') } catch (Exception expected) { rejected = true }
+            try { validateExecution(invalidFixture, ['required'], 'current') } catch (Exception expected) { rejected = true }
             if (!rejected) throw new GradleException("Execution guard accepted invalid evidence: ${payload}")
         }
-        java.nio.file.Files.deleteIfExists(fixture.toPath())
+        def missingFixture = new File(fixture.parentFile, 'never-created-missing.json')
         boolean rejectedMissing = false
-        try { validateExecution(fixture, ['required'], 'current') } catch (Exception expected) { rejectedMissing = true }
+        try { validateExecution(missingFixture, ['required'], 'current') } catch (Exception expected) { rejectedMissing = true }
         if (!rejectedMissing) throw new GradleException('Execution guard accepted missing evidence')
         logger.lifecycle('GameTest execution guard rejected 11 invalid/missing evidence cases')
     }

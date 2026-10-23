@@ -1,0 +1,100 @@
+// Nonshipping exact36 canonical policy transport. Original twelve Native tests/profile unchanged.
+def fixture = sourceSets.create('nativeFixture')
+fixture.compileClasspath += sourceSets.main.compileClasspath
+fixture.runtimeClasspath += sourceSets.main.runtimeClasspath
+// Actual Root side-both EMI, required by pinned JEED's SERVER constructor.
+// Root CF580555/8081375 SHA1 ea320200878e4a49196760234a22da763671520a.
+// Supported SourceSet runtime-only configuration travels through the existing
+// gameTestServer-only RunConfig attachment below; main/client/server stay unchanged.
+project.dependencies.add(fixture.runtimeOnlyConfigurationName,
+    project.extensions.getByName('fg').deobf('curse.maven:emi-580555:8081375'))
+
+def fixtureTests = sourceSets.create('nativeFixtureTest')
+fixtureTests.compileClasspath += fixture.output + fixture.compileClasspath + sourceSets.test.compileClasspath
+fixtureTests.runtimeClasspath += fixture.output + fixture.runtimeClasspath + sourceSets.test.runtimeClasspath
+
+def nativeRun = minecraft.runs.getByName('gameTestServer')
+def runDirectory = project.file(nativeRun.workingDirectory).canonicalFile
+def inputs = file('.native-fixture-inputs/' + runDirectory.name).canonicalFile
+def snapshot = file('gradle/canonical-malum-policy')
+def script = file('scripts/native_canonical_policy.py')
+def canonicalRoot = file(providers.environmentVariable('BC_CANONICAL_PACK_ROOT').orElse('/home/dev/better-content-modpack').get())
+def activityOwner = {
+    def owner = providers.environmentVariable('BC_OWNER_SESSION').orElse(providers.environmentVariable('PI_SESSION_ID')).orNull
+    if (!owner) throw new GradleException('Native canonical fixture requires a stable BC_OWNER_SESSION or PI_SESSION_ID activity owner')
+    owner
+}
+// Same owning mod, ONLY the actual gameTestServer RunConfig. No client/server/datagen attachment.
+nativeRun.mods.getByName(project.property('mod_id').toString()).source(fixture)
+nativeRun.property('bc.source.anchors.canonicalInputs', inputs.absolutePath)
+nativeRun.property('bc.source.anchors.nativeDirectory', runDirectory.absolutePath)
+
+tasks.register('prepareNativeCanonicalPolicy') {
+    doLast {
+        def bindings = groovy.json.JsonOutput.toJson(project.ext.bcAnchorsGlmBindings.call()).getBytes('UTF-8')
+        exec {
+            standardInput = new ByteArrayInputStream(bindings)
+            commandLine('python3', '-B', script, 'prepare', '--root', canonicalRoot, '--snapshot', snapshot,
+                '--destination', inputs, '--run', runDirectory, '--owner', activityOwner(), '--glm-bindings-stdin')
+        }
+    }
+}
+tasks.register('finishNativeCanonicalPolicyActivity') {
+    doLast {
+        if (new File(inputs, 'preparation.json').isFile()) {
+            exec {
+                commandLine('python3', '-B', script, 'finish', '--root', canonicalRoot,
+                    '--destination', inputs, '--run', runDirectory, '--owner', activityOwner())
+            }
+        }
+        // A failed partial stays registered/retained for explicit owner closure after quiet proof.
+        // finish closes activity only; no input/world/log/cache is deleted.
+    }
+}
+tasks.matching { it.name == 'runGameTestServer' }.configureEach {
+    dependsOn('prepareNativeCanonicalPolicy', 'nativeFixtureClasses')
+    finalizedBy('finishNativeCanonicalPolicyActivity')
+    doLast {
+        def proofFile = new File(runDirectory, 'native-canonical-malum-resources.json')
+        if (!proofFile.isFile()) throw new GradleException('Missing actual pre-test effective canonical resource proof')
+        def proof = new groovy.json.JsonSlurper().parse(proofFile)
+        if (proof.token != runDirectory.name || proof.actual_working_directory != runDirectory.absolutePath ||
+                proof.count != 36 || proof.effective_resources.size() != 36 ||
+                proof.manifest_sha256 != '07b0208546fdde2e1c74bd4d336a39b4a690d5ec2fd231904bbdc17269a36186' ||
+                proof.selected_pack_order_low_to_high.last() != 'zzzz_bc_source_anchors_malum_policy')
+            throw new GradleException('Incomplete/foreign canonical selected-pack/resource proof')
+    }
+}
+tasks.register('nativeCanonicalPolicyTest', Test) {
+    dependsOn('nativeFixtureTestClasses')
+    group = 'verification'
+    description = 'Pinned public PackRepository/ResourceManager source controls, not Forge startup.'
+    testClassesDirs = fixtureTests.output.classesDirs
+    classpath = fixtureTests.runtimeClasspath
+    useJUnitPlatform()
+    filter { includeTestsMatching('com.bettercontent.bettermagicchunkanchors.nativefixture.CanonicalPolicyFixtureTest') }
+    systemProperty('bc.source.anchors.testSnapshot', snapshot.absolutePath)
+    systemProperty('bc.source.anchors.testEvidence', layout.buildDirectory.dir('native-canonical-api-controls').get().asFile.absolutePath)
+}
+tasks.register('verifyNativeCanonicalPolicyControls') {
+    group = 'verification'
+    doLast {
+        exec {
+            environment('BC_CANONICAL_PACK_ROOT', canonicalRoot.absolutePath)
+            environment('BC_ANCHORS_POLICY_TEST_EVIDENCE_DIR', layout.buildDirectory.dir('native-canonical-controls').get().asFile.absolutePath)
+            commandLine('python3', '-B', file('scripts/test_native_canonical_policy.py'))
+        }
+    }
+}
+tasks.register('verifyNativeCanonicalPolicyShippingExclusion') {
+    group = 'verification'
+    dependsOn('stageRuntimeJar', 'sourcesJar')
+    doLast {
+        def runtime = layout.buildDirectory.file('libs/' + project.property('artifact_name') + '-' + project.version + '.jar').get().asFile
+        def sources = tasks.named('sourcesJar').get().archiveFile.get().asFile
+        exec { commandLine('python3', '-B', script, 'archives', '--archive', runtime, '--archive', sources) }
+    }
+}
+tasks.matching { it.name == 'verifyFast' }.configureEach {
+    dependsOn('nativeCanonicalPolicyTest', 'verifyNativeCanonicalPolicyControls', 'verifyNativeCanonicalPolicyShippingExclusion')
+}

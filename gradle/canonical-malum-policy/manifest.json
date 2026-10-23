@@ -1,0 +1,261 @@
+{
+  "phase": "NEW_FUTURE_SOURCE_FIXTURE_INPUT_SNAPSHOT_EXISTING_CANONICAL_POLICY_NOT_RECONSTRUCTED_PREGATE",
+  "root_head": "c69e76c865205d39606b2d20562f325c2bfccf38",
+  "policy_last_commit": "2468d83551b1d891f226477f9f1e73d2df461f27",
+  "count": 36,
+  "fixture_pack_metadata_sha256": "acdf7be08e1c0b9f68049790dca2e9160b5fffc8d4ec37e5699e5902fbb4cb16",
+  "files": [
+    {
+      "authoring_path": "kubejs/data/malum/advancements/recipes/aluminum_from_node_blasting.json",
+      "resource_id": "malum:advancements/recipes/aluminum_from_node_blasting.json",
+      "pack_path": "data/malum/advancements/recipes/aluminum_from_node_blasting.json",
+      "sha256": "3040901c6c74b67c2182bfc63ef29609ba4200890b9ff23892f27294d048cd5e",
+      "git_blob": "00c32d54c084722329a133d2313576b8ea02c965"
+    },
+    {
+      "authoring_path": "kubejs/data/malum/advancements/recipes/aluminum_from_node_smelting.json",
+      "resource_id": "malum:advancements/recipes/aluminum_from_node_smelting.json",
+      "pack_path": "data/malum/advancements/recipes/aluminum_from_node_smelting.json",
+      "sha256": "3040901c6c74b67c2182bfc63ef29609ba4200890b9ff23892f27294d048cd5e",
+      "git_blob": "00c32d54c084722329a133d2313576b8ea02c965"
+    },
+    {
+      "authoring_path": "kubejs/data/malum/advancements/recipes/cobalt_from_node_blasting.json",
+      "resource_id": "malum:advancements/recipes/cobalt_from_node_blasting.json",
+      "pack_path": "data/malum/advancements/recipes/cobalt_from_node_blasting.json",
+      "sha256": "3040901c6c74b67c2182bfc63ef29609ba4200890b9ff23892f27294d048cd5e",
+      "git_blob": "00c32d54c084722329a133d2313576b8ea02c965"
+    },
+    {
+      "authoring_path": "kubejs/data/malum/advancements/recipes/cobalt_from_node_smelting.json",
+      "resource_id": "malum:advancements/recipes/cobalt_from_node_smelting.json",
+      "pack_path": "data/malum/advancements/recipes/cobalt_from_node_smelting.json",
+      "sha256": "3040901c6c74b67c2182bfc63ef29609ba4200890b9ff23892f27294d048cd5e",
+      "git_blob": "00c32d54c084722329a133d2313576b8ea02c965"
+    },
+    {
+      "authoring_path": "kubejs/data/malum/advancements/recipes/impetus_creation_aluminum.json",
+      "resource_id": "malum:advancements/recipes/impetus_creation_aluminum.json",
+      "pack_path": "data/malum/advancements/recipes/impetus_creation_aluminum.json",
+      "sha256": "3040901c6c74b67c2182bfc63ef29609ba4200890b9ff23892f27294d048cd5e",
+      "git_blob": "00c32d54c084722329a133d2313576b8ea02c965"
+    },
+    {
+      "authoring_path": "kubejs/data/malum/advancements/recipes/impetus_creation_cobalt.json",
+      "resource_id": "malum:advancements/recipes/impetus_creation_cobalt.json",
+      "pack_path": "data/malum/advancements/recipes/impetus_creation_cobalt.json",
+      "sha256": "3040901c6c74b67c2182bfc63ef29609ba4200890b9ff23892f27294d048cd5e",
+      "git_blob": "00c32d54c084722329a133d2313576b8ea02c965"
+    },
+    {
+      "authoring_path": "kubejs/data/malum/advancements/recipes/impetus_creation_lead.json",
+      "resource_id": "malum:advancements/recipes/impetus_creation_lead.json",
+      "pack_path": "data/malum/advancements/recipes/impetus_creation_lead.json",
+      "sha256": "3040901c6c74b67c2182bfc63ef29609ba4200890b9ff23892f27294d048cd5e",
+      "git_blob": "00c32d54c084722329a133d2313576b8ea02c965"
+    },
+    {
+      "authoring_path": "kubejs/data/malum/advancements/recipes/impetus_creation_nickel.json",
+      "resource_id": "malum:advancements/recipes/impetus_creation_nickel.json",
+      "pack_path": "data/malum/advancements/recipes/impetus_creation_nickel.json",
+      "sha256": "3040901c6c74b67c2182bfc63ef29609ba4200890b9ff23892f27294d048cd5e",
+      "git_blob": "00c32d54c084722329a133d2313576b8ea02c965"
+    },
+    {
+      "authoring_path": "kubejs/data/malum/advancements/recipes/impetus_creation_osmium.json",
+      "resource_id": "malum:advancements/recipes/impetus_creation_osmium.json",
+      "pack_path": "data/malum/advancements/recipes/impetus_creation_osmium.json",
+      "sha256": "3040901c6c74b67c2182bfc63ef29609ba4200890b9ff23892f27294d048cd5e",
+      "git_blob": "00c32d54c084722329a133d2313576b8ea02c965"
+    },
+    {
+      "authoring_path": "kubejs/data/malum/advancements/recipes/impetus_creation_silver.json",
+      "resource_id": "malum:advancements/recipes/impetus_creation_silver.json",
+      "pack_path": "data/malum/advancements/recipes/impetus_creation_silver.json",
+      "sha256": "3040901c6c74b67c2182bfc63ef29609ba4200890b9ff23892f27294d048cd5e",
+      "git_blob": "00c32d54c084722329a133d2313576b8ea02c965"
+    },
+    {
+      "authoring_path": "kubejs/data/malum/advancements/recipes/impetus_creation_tin.json",
+      "resource_id": "malum:advancements/recipes/impetus_creation_tin.json",
+      "pack_path": "data/malum/advancements/recipes/impetus_creation_tin.json",
+      "sha256": "3040901c6c74b67c2182bfc63ef29609ba4200890b9ff23892f27294d048cd5e",
+      "git_blob": "00c32d54c084722329a133d2313576b8ea02c965"
+    },
+    {
+      "authoring_path": "kubejs/data/malum/advancements/recipes/impetus_creation_uranium.json",
+      "resource_id": "malum:advancements/recipes/impetus_creation_uranium.json",
+      "pack_path": "data/malum/advancements/recipes/impetus_creation_uranium.json",
+      "sha256": "3040901c6c74b67c2182bfc63ef29609ba4200890b9ff23892f27294d048cd5e",
+      "git_blob": "00c32d54c084722329a133d2313576b8ea02c965"
+    },
+    {
+      "authoring_path": "kubejs/data/malum/advancements/recipes/impetus_creation_zinc.json",
+      "resource_id": "malum:advancements/recipes/impetus_creation_zinc.json",
+      "pack_path": "data/malum/advancements/recipes/impetus_creation_zinc.json",
+      "sha256": "3040901c6c74b67c2182bfc63ef29609ba4200890b9ff23892f27294d048cd5e",
+      "git_blob": "00c32d54c084722329a133d2313576b8ea02c965"
+    },
+    {
+      "authoring_path": "kubejs/data/malum/advancements/recipes/lead_from_node_blasting.json",
+      "resource_id": "malum:advancements/recipes/lead_from_node_blasting.json",
+      "pack_path": "data/malum/advancements/recipes/lead_from_node_blasting.json",
+      "sha256": "3040901c6c74b67c2182bfc63ef29609ba4200890b9ff23892f27294d048cd5e",
+      "git_blob": "00c32d54c084722329a133d2313576b8ea02c965"
+    },
+    {
+      "authoring_path": "kubejs/data/malum/advancements/recipes/lead_from_node_smelting.json",
+      "resource_id": "malum:advancements/recipes/lead_from_node_smelting.json",
+      "pack_path": "data/malum/advancements/recipes/lead_from_node_smelting.json",
+      "sha256": "3040901c6c74b67c2182bfc63ef29609ba4200890b9ff23892f27294d048cd5e",
+      "git_blob": "00c32d54c084722329a133d2313576b8ea02c965"
+    },
+    {
+      "authoring_path": "kubejs/data/malum/advancements/recipes/nickel_from_node_blasting.json",
+      "resource_id": "malum:advancements/recipes/nickel_from_node_blasting.json",
+      "pack_path": "data/malum/advancements/recipes/nickel_from_node_blasting.json",
+      "sha256": "3040901c6c74b67c2182bfc63ef29609ba4200890b9ff23892f27294d048cd5e",
+      "git_blob": "00c32d54c084722329a133d2313576b8ea02c965"
+    },
+    {
+      "authoring_path": "kubejs/data/malum/advancements/recipes/nickel_from_node_smelting.json",
+      "resource_id": "malum:advancements/recipes/nickel_from_node_smelting.json",
+      "pack_path": "data/malum/advancements/recipes/nickel_from_node_smelting.json",
+      "sha256": "3040901c6c74b67c2182bfc63ef29609ba4200890b9ff23892f27294d048cd5e",
+      "git_blob": "00c32d54c084722329a133d2313576b8ea02c965"
+    },
+    {
+      "authoring_path": "kubejs/data/malum/advancements/recipes/node_focusing_aluminum.json",
+      "resource_id": "malum:advancements/recipes/node_focusing_aluminum.json",
+      "pack_path": "data/malum/advancements/recipes/node_focusing_aluminum.json",
+      "sha256": "3040901c6c74b67c2182bfc63ef29609ba4200890b9ff23892f27294d048cd5e",
+      "git_blob": "00c32d54c084722329a133d2313576b8ea02c965"
+    },
+    {
+      "authoring_path": "kubejs/data/malum/advancements/recipes/node_focusing_cobalt.json",
+      "resource_id": "malum:advancements/recipes/node_focusing_cobalt.json",
+      "pack_path": "data/malum/advancements/recipes/node_focusing_cobalt.json",
+      "sha256": "3040901c6c74b67c2182bfc63ef29609ba4200890b9ff23892f27294d048cd5e",
+      "git_blob": "00c32d54c084722329a133d2313576b8ea02c965"
+    },
+    {
+      "authoring_path": "kubejs/data/malum/advancements/recipes/node_focusing_lead.json",
+      "resource_id": "malum:advancements/recipes/node_focusing_lead.json",
+      "pack_path": "data/malum/advancements/recipes/node_focusing_lead.json",
+      "sha256": "3040901c6c74b67c2182bfc63ef29609ba4200890b9ff23892f27294d048cd5e",
+      "git_blob": "00c32d54c084722329a133d2313576b8ea02c965"
+    },
+    {
+      "authoring_path": "kubejs/data/malum/advancements/recipes/node_focusing_nickel.json",
+      "resource_id": "malum:advancements/recipes/node_focusing_nickel.json",
+      "pack_path": "data/malum/advancements/recipes/node_focusing_nickel.json",
+      "sha256": "3040901c6c74b67c2182bfc63ef29609ba4200890b9ff23892f27294d048cd5e",
+      "git_blob": "00c32d54c084722329a133d2313576b8ea02c965"
+    },
+    {
+      "authoring_path": "kubejs/data/malum/advancements/recipes/node_focusing_osmium.json",
+      "resource_id": "malum:advancements/recipes/node_focusing_osmium.json",
+      "pack_path": "data/malum/advancements/recipes/node_focusing_osmium.json",
+      "sha256": "3040901c6c74b67c2182bfc63ef29609ba4200890b9ff23892f27294d048cd5e",
+      "git_blob": "00c32d54c084722329a133d2313576b8ea02c965"
+    },
+    {
+      "authoring_path": "kubejs/data/malum/advancements/recipes/node_focusing_silver.json",
+      "resource_id": "malum:advancements/recipes/node_focusing_silver.json",
+      "pack_path": "data/malum/advancements/recipes/node_focusing_silver.json",
+      "sha256": "3040901c6c74b67c2182bfc63ef29609ba4200890b9ff23892f27294d048cd5e",
+      "git_blob": "00c32d54c084722329a133d2313576b8ea02c965"
+    },
+    {
+      "authoring_path": "kubejs/data/malum/advancements/recipes/node_focusing_tin.json",
+      "resource_id": "malum:advancements/recipes/node_focusing_tin.json",
+      "pack_path": "data/malum/advancements/recipes/node_focusing_tin.json",
+      "sha256": "3040901c6c74b67c2182bfc63ef29609ba4200890b9ff23892f27294d048cd5e",
+      "git_blob": "00c32d54c084722329a133d2313576b8ea02c965"
+    },
+    {
+      "authoring_path": "kubejs/data/malum/advancements/recipes/node_focusing_uranium.json",
+      "resource_id": "malum:advancements/recipes/node_focusing_uranium.json",
+      "pack_path": "data/malum/advancements/recipes/node_focusing_uranium.json",
+      "sha256": "3040901c6c74b67c2182bfc63ef29609ba4200890b9ff23892f27294d048cd5e",
+      "git_blob": "00c32d54c084722329a133d2313576b8ea02c965"
+    },
+    {
+      "authoring_path": "kubejs/data/malum/advancements/recipes/node_focusing_zinc.json",
+      "resource_id": "malum:advancements/recipes/node_focusing_zinc.json",
+      "pack_path": "data/malum/advancements/recipes/node_focusing_zinc.json",
+      "sha256": "3040901c6c74b67c2182bfc63ef29609ba4200890b9ff23892f27294d048cd5e",
+      "git_blob": "00c32d54c084722329a133d2313576b8ea02c965"
+    },
+    {
+      "authoring_path": "kubejs/data/malum/advancements/recipes/osmium_from_node_blasting.json",
+      "resource_id": "malum:advancements/recipes/osmium_from_node_blasting.json",
+      "pack_path": "data/malum/advancements/recipes/osmium_from_node_blasting.json",
+      "sha256": "3040901c6c74b67c2182bfc63ef29609ba4200890b9ff23892f27294d048cd5e",
+      "git_blob": "00c32d54c084722329a133d2313576b8ea02c965"
+    },
+    {
+      "authoring_path": "kubejs/data/malum/advancements/recipes/osmium_from_node_smelting.json",
+      "resource_id": "malum:advancements/recipes/osmium_from_node_smelting.json",
+      "pack_path": "data/malum/advancements/recipes/osmium_from_node_smelting.json",
+      "sha256": "3040901c6c74b67c2182bfc63ef29609ba4200890b9ff23892f27294d048cd5e",
+      "git_blob": "00c32d54c084722329a133d2313576b8ea02c965"
+    },
+    {
+      "authoring_path": "kubejs/data/malum/advancements/recipes/silver_from_node_blasting.json",
+      "resource_id": "malum:advancements/recipes/silver_from_node_blasting.json",
+      "pack_path": "data/malum/advancements/recipes/silver_from_node_blasting.json",
+      "sha256": "3040901c6c74b67c2182bfc63ef29609ba4200890b9ff23892f27294d048cd5e",
+      "git_blob": "00c32d54c084722329a133d2313576b8ea02c965"
+    },
+    {
+      "authoring_path": "kubejs/data/malum/advancements/recipes/silver_from_node_smelting.json",
+      "resource_id": "malum:advancements/recipes/silver_from_node_smelting.json",
+      "pack_path": "data/malum/advancements/recipes/silver_from_node_smelting.json",
+      "sha256": "3040901c6c74b67c2182bfc63ef29609ba4200890b9ff23892f27294d048cd5e",
+      "git_blob": "00c32d54c084722329a133d2313576b8ea02c965"
+    },
+    {
+      "authoring_path": "kubejs/data/malum/advancements/recipes/tin_from_node_blasting.json",
+      "resource_id": "malum:advancements/recipes/tin_from_node_blasting.json",
+      "pack_path": "data/malum/advancements/recipes/tin_from_node_blasting.json",
+      "sha256": "3040901c6c74b67c2182bfc63ef29609ba4200890b9ff23892f27294d048cd5e",
+      "git_blob": "00c32d54c084722329a133d2313576b8ea02c965"
+    },
+    {
+      "authoring_path": "kubejs/data/malum/advancements/recipes/tin_from_node_smelting.json",
+      "resource_id": "malum:advancements/recipes/tin_from_node_smelting.json",
+      "pack_path": "data/malum/advancements/recipes/tin_from_node_smelting.json",
+      "sha256": "3040901c6c74b67c2182bfc63ef29609ba4200890b9ff23892f27294d048cd5e",
+      "git_blob": "00c32d54c084722329a133d2313576b8ea02c965"
+    },
+    {
+      "authoring_path": "kubejs/data/malum/advancements/recipes/uranium_from_node_blasting.json",
+      "resource_id": "malum:advancements/recipes/uranium_from_node_blasting.json",
+      "pack_path": "data/malum/advancements/recipes/uranium_from_node_blasting.json",
+      "sha256": "3040901c6c74b67c2182bfc63ef29609ba4200890b9ff23892f27294d048cd5e",
+      "git_blob": "00c32d54c084722329a133d2313576b8ea02c965"
+    },
+    {
+      "authoring_path": "kubejs/data/malum/advancements/recipes/uranium_from_node_smelting.json",
+      "resource_id": "malum:advancements/recipes/uranium_from_node_smelting.json",
+      "pack_path": "data/malum/advancements/recipes/uranium_from_node_smelting.json",
+      "sha256": "3040901c6c74b67c2182bfc63ef29609ba4200890b9ff23892f27294d048cd5e",
+      "git_blob": "00c32d54c084722329a133d2313576b8ea02c965"
+    },
+    {
+      "authoring_path": "kubejs/data/malum/advancements/recipes/zinc_from_node_blasting.json",
+      "resource_id": "malum:advancements/recipes/zinc_from_node_blasting.json",
+      "pack_path": "data/malum/advancements/recipes/zinc_from_node_blasting.json",
+      "sha256": "3040901c6c74b67c2182bfc63ef29609ba4200890b9ff23892f27294d048cd5e",
+      "git_blob": "00c32d54c084722329a133d2313576b8ea02c965"
+    },
+    {
+      "authoring_path": "kubejs/data/malum/advancements/recipes/zinc_from_node_smelting.json",
+      "resource_id": "malum:advancements/recipes/zinc_from_node_smelting.json",
+      "pack_path": "data/malum/advancements/recipes/zinc_from_node_smelting.json",
+      "sha256": "3040901c6c74b67c2182bfc63ef29609ba4200890b9ff23892f27294d048cd5e",
+      "git_blob": "00c32d54c084722329a133d2313576b8ea02c965"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.bettercontent.bettermagicchunkanchors.nativefixture.glmmixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "FixtureGlmLoadMixin",
+    "RegistryCodecDecodeMixin",
+    "RootCodecBodyMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

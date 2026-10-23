@@ -73,6 +73,9 @@ dependencies {
     runtimeOnly(deobf("curse.maven:blood-magic-224791:7956981"))
     runtimeOnly(deobf("curse.maven:goety-586095:8087429"))
     runtimeOnly(deobf("curse.maven:malum-484064:6646111"))
+    // Actual production JEED 2.2.5 (CF532286/6172935), raw JAR SHA1
+    // 9f6b1884ad8b81c0e8796daf7871eeb54271f27b; keep declared transitive dependencies.
+    runtimeOnly(deobf("curse.maven:jeed-532286:6172935"))
     runtimeOnly(deobf("curse.maven:power-grid-1321420:7714613"))
     runtimeOnly(deobf("curse.maven:patchouli-306770:7731017"))
     runtimeOnly(deobf("curse.maven:curios-309927:6418456"))
@@ -113,3 +116,6 @@ tasks.register("verifyFast") { dependsOn(tasks.named("test"), tasks.named("assem
 tasks.register("verifyFull") { dependsOn(tasks.named("verifyFast"), tasks.named("runGameTestServer")) }
 
 apply(from = "gradle/gametest-evidence.gradle")
+apply(from = "gradle/native-gametest-fixture.gradle")
+apply(from = "gradle/native-canonical-policy.gradle")
+apply(from = "gradle/native-glm.gradle")

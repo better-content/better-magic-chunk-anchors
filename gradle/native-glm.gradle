@@ -1,0 +1,124 @@
+// B-local SOURCE adaptation of A's recipe. Original 14 main +4 API /12 Native/36 rows remain mandatory.
+// No new profile, run, shipping dependency or standalone preparation/acceptance gate.
+import groovy.json.JsonOutput
+import groovy.json.JsonSlurper
+import java.security.MessageDigest
+
+def fixture = sourceSets.getByName('nativeFixture')
+fixture.compileClasspath += sourceSets.main.runtimeClasspath // public pinned Ars registry-object API, fixture only
+
+def scopeFile = file('src/nativeFixture/glm-scope.json')
+def scope = new JsonSlurper().parse(scopeFile)
+def originalSpecs = scope.profiles.anchors.originals
+def raw = configurations.create('nativeCanonicalGlmOriginalArchives') {
+    canBeResolved = true
+    canBeConsumed = false
+    transitive = false
+}
+originalSpecs.each { dependencies.add(raw.name, it.coordinate) }
+def normal = { String value -> value.split(':').take(3).join(':').replaceAll(/_mapped_.*/, '') }
+
+// Evaluated ONLY inside the ordinary owning prepare task's action, never at configuration time.
+// Serialized through stdin; the existing producer registers its exact retained token BEFORE writing it.
+project.ext.bcAnchorsGlmBindings = {
+    def rawArtifacts = raw.resolvedConfiguration.resolvedArtifacts
+    def originals = originalSpecs.collect { spec ->
+        def candidates = rawArtifacts.findAll { artifact ->
+            def gav = artifact.moduleVersion.id
+            def coordinate = "${gav.group}:${gav.name}:${gav.version}" + (artifact.classifier ? ":${artifact.classifier}" : '')
+            coordinate == spec.coordinate
+        }
+        if (candidates.size() != 1) throw new GradleException('Exact original archive missing/ambiguous: ' + spec.coordinate)
+        [coordinate: spec.coordinate, path: candidates.get(0).file.canonicalPath]
+    }
+    def declared = ['implementation', 'runtimeOnly', fixture.runtimeOnlyConfigurationName].collectMany { name ->
+        configurations.getByName(name).allDependencies.findAll { it.group && it.version && !(it.group == 'net.minecraftforge' && it.name == 'forge') }
+            .collect { normal("${it.group}:${it.name}:${it.version}") }
+    }.unique().sort()
+    if (declared != originalSpecs.collect { normal(it.coordinate) }.unique().sort())
+        throw new GradleException('Actual declared SDK graph drift; review every difference, never filter it')
+    def artifactCoordinates = [:]
+    [configurations.runtimeClasspath, configurations.getByName(fixture.runtimeClasspathConfigurationName)].each { configuration ->
+        configuration.resolvedConfiguration.resolvedArtifacts.each { artifact ->
+            def gav = artifact.moduleVersion.id
+            artifactCoordinates[artifact.file.canonicalPath] = normal("${gav.group}:${gav.name}:${gav.version}")
+        }
+    }
+    def runtimeFiles = fixture.runtimeClasspath.files.findAll { it.isFile() && it.name.endsWith('.jar') }.collect { it.canonicalFile }.unique()
+    def supplemental = [mappedForgeSdk: { it.name == 'forge-1.20.1-47.4.13_mapped_official_1.20.1.jar' },
+                        actualDfuSdk: { it.name.startsWith('datafixerupper-') },
+                        actualGuavaSdk: { it.name.startsWith('guava-') }].collect { coordinate, predicate ->
+        def matches = runtimeFiles.findAll(predicate)
+        if (matches.size() != 1) throw new GradleException('Required exact decoder/order SDK missing/ambiguous: ' + coordinate)
+        [coordinate: coordinate, path: matches.get(0).canonicalPath]
+    }
+    [originals: originals, actual_declared_original_coordinates: declared, supplemental: supplemental,
+     runtime: runtimeFiles.collect { [coordinate: artifactCoordinates[it.canonicalPath] ?: ('runtime-file:' + it.name), path: it.canonicalPath] },
+     own_resource_directories: [sourceSets.main.output.resourcesDir.canonicalPath, fixture.output.resourcesDir.canonicalPath]]
+}
+
+tasks.named(fixture.processResourcesTaskName).configure {
+    from(scopeFile) { rename { 'bc_anchors_fixture_glm_scope.json' } }
+}
+def nativeRun = minecraft.runs.getByName('gameTestServer')
+def run = project.file(nativeRun.workingDirectory).canonicalFile
+def inputs = file('.native-fixture-inputs/' + run.name).canonicalFile
+def manifest = new File(inputs, 'glm/manifest.json')
+nativeRun.args('--mixin', 'bc_anchors_fixture_glm.mixins.json')
+nativeRun.property('bc.anchors.fixtureGlm.manifest', manifest.absolutePath)
+nativeRun.property('bc.anchors.fixtureGlm.manifest.attempt', run.name)
+nativeRun.property('bc.anchors.fixtureGlm.manifest.proof', new File(run, 'fixture-glm-load-proof.json').absolutePath)
+tasks.named('prepareNativeCanonicalPolicy').configure {
+    dependsOn('classes', 'nativeFixtureClasses')
+}
+tasks.matching { it.name == 'runGameTestServer' }.configureEach {
+    doFirst {
+        exec { commandLine('python3', '-B', file('scripts/prepare_native_glm.py'), '--verify', manifest) }
+        def hash = MessageDigest.getInstance('SHA-256').digest(manifest.bytes).encodeHex().toString()
+        systemProperty('bc.anchors.fixtureGlm.manifest.sha256', hash)
+    }
+    doLast {
+        def proofFile = new File(run, 'fixture-glm-load-proof.json')
+        if (!proofFile.isFile()) throw new GradleException('Missing actual original-apply RETURN/effective-stack/public-loaded proof')
+        def proof = new JsonSlurper().parse(proofFile)
+        if (proof.schema != 'bc.anchors.fixture_glm_load_proof.v1' || proof.attempt != run.name ||
+            proof.orderedIds?.size() != 16 || proof.effectiveDefinitions?.size() != 16 || proof.actualDecodedCount != 16 ||
+            proof.actualCodecIdentitiesAndOrder != true || proof.arsRegisteredDecoderInputImplementationOrder != true ||
+            proof.memoizedDirectIdentityTypeCount != 8 || proof.originalDirectParseBrackets != 16 ||
+            proof.selectedArsRegistryDecoderReturns != 1 || proof.originalArsRootBodyReturns != 1 ||
+            proof.originalApplyReturnsProved < 1 || proof.originalApplyReturnsProved > 4 ||
+            proof.requiredFixedTopSelected != true || proof.scalarOnly != true || proof.gameplayEffectsAccepted != false)
+            throw new GradleException('Incomplete canonical16 native observation; no status forcing or fallback')
+    }
+}
+
+tasks.register('nativeGlmAbiTest', Test) {
+    dependsOn('nativeFixtureTestClasses')
+    group = 'verification'
+    description = 'Actual compiled private-handler/public-dispatcher and coupled predicate controls; no Forge startup.'
+    def fixtureTests = sourceSets.getByName('nativeFixtureTest')
+    testClassesDirs = fixtureTests.output.classesDirs
+    classpath = fixtureTests.runtimeClasspath
+    useJUnitPlatform()
+    filter {
+        includeTestsMatching('com.bettercontent.bettermagicchunkanchors.nativefixture.FixtureGlmAbiTest')
+        includeTestsMatching('com.bettercontent.bettermagicchunkanchors.nativefixture.ArsDispatchScopeTest')
+        includeTestsMatching('com.bettercontent.bettermagicchunkanchors.nativefixture.ArsDecodeObserverAbiTest')
+    }
+    systemProperty('bc.anchors.glm.compiledClasses', fixture.output.classesDirs.asPath)
+}
+tasks.register('verifyNativeGlmSourceControls') {
+    group = 'verification'
+    doLast {
+        def bindings = JsonOutput.toJson(project.ext.bcAnchorsGlmBindings.call()).getBytes('UTF-8')
+        exec {
+            standardInput = new ByteArrayInputStream(bindings)
+            environment('BC_CANONICAL_PACK_ROOT', file(providers.environmentVariable('BC_CANONICAL_PACK_ROOT').orElse('/home/dev/better-content-modpack').get()).absolutePath)
+            environment('BC_ANCHORS_GLM_TEST_EVIDENCE', layout.buildDirectory.dir('native-glm-controls').get().asFile.absolutePath)
+            commandLine('python3', '-B', file('scripts/test_native_glm.py'))
+        }
+    }
+}
+tasks.matching { it.name == 'verifyFast' }.configureEach {
+    dependsOn('nativeGlmAbiTest', 'verifyNativeGlmSourceControls')
+}
