@@ -139,6 +139,34 @@ this candidate still needs a separately admitted original full gate, complete ac
 quiet/release-before-review and lead disposition. No FG/native/staging/publication permission
 follows from this implementation.
 
+### Native-only registry callback accounting observer
+
+The same required `gameTestServer`-only Mixin configuration observes pinned Registrate1.3.3
+at `onRegister` HEAD, constructor RETURN, and original `addRegisterCallback`/`accept` RETURN.
+It never replaces a target call, return, map or exception, resolves a RegistryObject, changes
+callback accounting, synchronizes target access, or changes the twelve native tests/GLM proof.
+All helper classes remain outside the reserved Mixin package and excluded from shipping archives.
+
+`BC_ANCHORS_REGISTRY_CALLBACK_V1` INFO records use Registrate's **original** native Log4j
+logger. The fresh UUID property must equal the fixture manifest attempt and have its actual
+manifest SHA256 binding. Scalars include event registry/mod ID, source/map identity hashes,
+thread ID/name and monotonic time, `isWarnEnabled`, multimap size/isEmpty, public asMap key
+count and bounded collection-size sum. Typed Pair<String,ResourceKey> keys use only string/
+registry-location scalars; unknown keys expose class names, never arbitrary `toString`.
+These identity hashes are diagnostic correlation hints, not collision-free object proof.
+
+The entire launch emits at most128 records: first32 ordinary construction/capture observations,
+first32 asymmetric/projection-error observations, and independently reserved first64 pre-register
+observations. Each projection reads at most128 keys and prints at most eight bounded key names.
+The caps intentionally mean later threads/mutations or a later first inconsistency may be missed.
+Views are read-only but **not atomic**; a concurrent-change/error or mismatched sum is an observed
+accounting symptom, not proof of its cause or a thread-safety repair. Observer failures cannot
+replace the original registry exception. A successful native task additionally requires its own
+nonce-bound Create pre-register record in `logs/debug.log`. Pure raw/mapped byte/ABI and compiled
+observer controls plus public-view negative controls do not establish native reproduction.
+If the failing state does not recur under observation, the startup defect remains unresolved;
+no suppression, retry-until-green verdict or synchronized-map fix follows from this diagnostic.
+
 ## Canonical identity
 
 - Repository and Gradle project: `better-magic-chunk-anchors`

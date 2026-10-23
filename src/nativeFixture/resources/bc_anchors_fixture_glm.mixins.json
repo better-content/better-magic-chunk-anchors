@@ -6,7 +6,8 @@
   "mixins": [
     "FixtureGlmLoadMixin",
     "RegistryCodecDecodeMixin",
-    "RootCodecBodyMixin"
+    "RootCodecBodyMixin",
+    "RegistryCallbackTraceMixin"
   ],
   "injectors": {
     "defaultRequire": 1

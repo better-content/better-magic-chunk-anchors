@@ -102,7 +102,11 @@ class GlmRecipeControls(unittest.TestCase):
     def test_both_archive_roles_reject_every_new_fixture_shape(self):
         entries = ['bc_anchors_fixture_glm.mixins.json', 'bc_anchors_fixture_glm_scope.json',
                    'glm-scope.json', 'scripts/prepare_native_glm.py',
-                   'com/bettercontent/bettermagicchunkanchors/nativefixture/glm/DecodedRowProofRules.class', p.INDEX]
+                   'com/bettercontent/bettermagicchunkanchors/nativefixture/glm/DecodedRowProofRules.class',
+                   'com/bettercontent/bettermagicchunkanchors/nativefixture/glm/RegistryCallbackBudget.class',
+                   'com/bettercontent/bettermagicchunkanchors/nativefixture/glm/RegistryCallbackSnapshot.class',
+                   'com/bettercontent/bettermagicchunkanchors/nativefixture/glm/RegistryCallbackTrace.class',
+                   'com/bettercontent/bettermagicchunkanchors/nativefixture/glmmixin/RegistryCallbackTraceMixin.class', p.INDEX]
         for role in ['runtime-reobf', 'sources']:
             for i, entry in enumerate(entries):
                 path = E / f'{role}-leak-{i}.zip'

@@ -67,6 +67,7 @@ def manifest = new File(inputs, 'glm/manifest.json')
 nativeRun.args('--mixin', 'bc_anchors_fixture_glm.mixins.json')
 nativeRun.property('bc.anchors.fixtureGlm.manifest', manifest.absolutePath)
 nativeRun.property('bc.anchors.fixtureGlm.manifest.attempt', run.name)
+nativeRun.property('bc.anchors.registryTrace.attempt', run.name)
 nativeRun.property('bc.anchors.fixtureGlm.manifest.proof', new File(run, 'fixture-glm-load-proof.json').absolutePath)
 tasks.named('prepareNativeCanonicalPolicy').configure {
     dependsOn('classes', 'nativeFixtureClasses')
@@ -78,6 +79,11 @@ tasks.matching { it.name == 'runGameTestServer' }.configureEach {
         systemProperty('bc.anchors.fixtureGlm.manifest.sha256', hash)
     }
     doLast {
+        def nativeDebug = new File(run, 'logs/debug.log')
+        if (!nativeDebug.isFile() || !nativeDebug.readLines().any { line ->
+                line.contains('BC_ANCHORS_REGISTRY_CALLBACK_V1 attempt=' + run.name + ' phase=before_register') &&
+                line.contains('modid=create registry=') && line.contains('warn_enabled=') })
+            throw new GradleException('Missing nonce-bound original Create pre-register callback observation')
         def proofFile = new File(run, 'fixture-glm-load-proof.json')
         if (!proofFile.isFile()) throw new GradleException('Missing actual original-apply RETURN/effective-stack/public-loaded proof')
         def proof = new JsonSlurper().parse(proofFile)
@@ -108,8 +114,17 @@ tasks.register('nativeGlmAbiTest', Test) {
         includeTestsMatching('com.bettercontent.bettermagicchunkanchors.nativefixture.ArsDecodeObserverAbiTest')
         includeTestsMatching('com.bettercontent.bettermagicchunkanchors.nativefixture.RootParseExtractionTest')
         includeTestsMatching('com.bettercontent.bettermagicchunkanchors.nativefixture.CodecDispatchLedgerTest')
+        includeTestsMatching('com.bettercontent.bettermagicchunkanchors.nativefixture.RegistryCallbackTraceTest')
     }
     systemProperty('bc.anchors.glm.compiledClasses', fixture.output.classesDirs.asPath)
+    doFirst {
+        def original = raw.resolvedConfiguration.resolvedArtifacts.findAll { artifact ->
+            def gav = artifact.moduleVersion.id
+            "${gav.group}:${gav.name}:${gav.version}" == 'com.tterrag.registrate:Registrate:MC1.20-1.3.3'
+        }
+        if (original.size() != 1) throw new GradleException('Missing exact raw Registrate observer ABI input')
+        systemProperty('bc.anchors.registryTrace.rawRegistrate', original.get(0).file.canonicalPath)
+    }
 }
 tasks.register('verifyNativeGlmSourceControls') {
     group = 'verification'
