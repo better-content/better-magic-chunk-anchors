@@ -20,7 +20,8 @@ def normal = { String value -> value.split(':').take(3).join(':').replaceAll(/_m
 
 // Evaluated ONLY inside the ordinary owning prepare task's action, never at configuration time.
 // Serialized through stdin; the existing producer registers its exact retained token BEFORE writing it.
-project.ext.bcAnchorsGlmBindings = {
+// Pure projection controls consume only these real SDK archives. This is not a native profile.
+def projectionBindings = {
     def rawArtifacts = raw.resolvedConfiguration.resolvedArtifacts
     def originals = originalSpecs.collect { spec ->
         def candidates = rawArtifacts.findAll { artifact ->
@@ -31,12 +32,6 @@ project.ext.bcAnchorsGlmBindings = {
         if (candidates.size() != 1) throw new GradleException('Exact original archive missing/ambiguous: ' + spec.coordinate)
         [coordinate: spec.coordinate, path: candidates.iterator().next().file.canonicalPath]
     }
-    def declared = ['implementation', 'runtimeOnly', fixture.runtimeOnlyConfigurationName].collectMany { name ->
-        configurations.getByName(name).allDependencies.findAll { it.group && it.version && !(it.group == 'net.minecraftforge' && it.name == 'forge') }
-            .collect { normal("${it.group}:${it.name}:${it.version}") }
-    }.unique().sort()
-    if (declared != originalSpecs.collect { normal(it.coordinate) }.unique().sort())
-        throw new GradleException('Actual declared SDK graph drift; review every difference, never filter it')
     def artifactCoordinates = [:]
     [configurations.runtimeClasspath, configurations.getByName(fixture.runtimeClasspathConfigurationName)].each { configuration ->
         configuration.resolvedConfiguration.resolvedArtifacts.each { artifact ->
@@ -52,9 +47,19 @@ project.ext.bcAnchorsGlmBindings = {
         if (matches.size() != 1) throw new GradleException('Required exact decoder/order SDK missing/ambiguous: ' + coordinate)
         [coordinate: coordinate, path: matches.get(0).canonicalPath]
     }
-    [originals: originals, actual_declared_original_coordinates: declared, supplemental: supplemental,
+    [originals: originals, supplemental: supplemental,
      runtime: runtimeFiles.collect { [coordinate: artifactCoordinates[it.canonicalPath] ?: ('runtime-file:' + it.name), path: it.canonicalPath] },
      own_resource_directories: [sourceSets.main.output.resourcesDir.canonicalPath, fixture.output.resourcesDir.canonicalPath]]
+}
+
+// The ONLY native producer binding always admits the whole graph and both canonical peers first.
+project.ext.bcAnchorsGlmBindings = {
+    def sdkRoles = project.ext.bcCanonicalSdkRoles()
+    def expectedOriginals = originalSpecs.collect { normal(it.coordinate) }.unique().sort()
+    if (sdkRoles.actual_declared_original_coordinates != expectedOriginals)
+        throw new GradleException('Original role differs after whole graph admission: expected=' + expectedOriginals +
+            '; actual=' + sdkRoles.actual_declared_original_coordinates)
+    sdkRoles + projectionBindings()
 }
 
 tasks.named(fixture.processResourcesTaskName).configure {
@@ -129,7 +134,8 @@ tasks.register('nativeGlmAbiTest', Test) {
 tasks.register('verifyNativeGlmSourceControls') {
     group = 'verification'
     doLast {
-        def bindings = JsonOutput.toJson(project.ext.bcAnchorsGlmBindings.call()).getBytes('UTF-8')
+        // Unit projection/archive/ownership negatives only; cannot enter the native producer.
+        def bindings = JsonOutput.toJson(projectionBindings()).getBytes('UTF-8')
         exec {
             standardInput = new ByteArrayInputStream(bindings)
             environment('BC_CANONICAL_PACK_ROOT', file(providers.environmentVariable('BC_CANONICAL_PACK_ROOT').orElse('/home/dev/better-content-modpack').get()).absolutePath)

@@ -1,0 +1,100 @@
+// SOURCE-native only. The Root DAG qualifies/stamps these exact production providers first.
+import groovy.json.JsonOutput
+import java.nio.file.Files
+import java.nio.file.LinkOption
+import java.nio.file.StandardOpenOption
+import java.security.MessageDigest
+import java.util.zip.ZipFile
+
+def binding = providers.environmentVariable('BC_CUSTOM_MOD_JAR_DIR')
+if (binding.present && binding.get().trim().isEmpty()) throw new GradleException('Empty canonical provider binding')
+def fixture = sourceSets.getByName('nativeFixture')
+def nativeRun = minecraft.runs.getByName('gameTestServer')
+def token = new File(nativeRun.workingDirectory).name
+def receipt = new File(nativeRun.workingDirectory, 'canonical-custom-providers.json')
+def providersRequired = [
+    [mod_id: 'better_compat_fixes', artifact: 'better-compat-fixes-0.1.9.jar', repository: 'better-compat-fixes', notation: 'bettercontent.local.anchors:better-compat-fixes:0.1.9'],
+    [mod_id: 'better_gameplay_notices', artifact: 'better-gameplay-notices-1.0.0.jar', repository: 'better-gameplay-notices', notation: 'bettercontent.local.anchors:better-gameplay-notices:1.0.0']
+]
+// FG globally resolves __obfuscated configurations: unbound pure tasks must not register missing coordinates.
+if (binding.present) {
+    repositories.flatDir {
+        name = 'canonicalAnchorsProviders'
+        dirs(binding.get())
+        content { includeGroup('bettercontent.local.anchors') }
+    }
+    providersRequired.each { row -> dependencies.add(fixture.runtimeOnlyConfigurationName, fg.deobf(row.notation)) }
+}
+def requestedNative = gradle.startParameter.taskNames.any {
+    it.tokenize(':').last() in ['verifyFull', 'runGameTestServer', 'prepareRunGameTestServer']
+}
+if (requestedNative && !binding.present)
+    throw new GradleException('Native Anchors requires canonical BC_CUSTOM_MOD_JAR_DIR; no historical/sibling fallback')
+nativeRun.property('bc.anchors.providers.binding', receipt.absolutePath)
+nativeRun.property('bc.anchors.providers.attempt', token)
+def sha = { byte[] bytes -> MessageDigest.getInstance('SHA-256').digest(bytes).encodeHex().toString() }
+def ordinary = { File file ->
+    def path = file.toPath().toAbsolutePath().normalize()
+    for (def part = path; part != null; part = part.parent)
+        if (Files.isSymbolicLink(part)) throw new GradleException('Symlink canonical provider input: ' + part)
+    if (!Files.isRegularFile(path, LinkOption.NOFOLLOW_LINKS)) throw new GradleException('Missing canonical provider: ' + path)
+    path
+}
+tasks.register('verifyCanonicalCustomProvidersRunConfigGuard') {
+    doLast {
+        minecraft.runs.each { run ->
+            if (run.properties.keySet().any { it.startsWith('bc.anchors.providers.') } != (run.name == 'gameTestServer'))
+                throw new GradleException('Canonical provider binding escaped native launcher: ' + run.name)
+        }
+    }
+}
+tasks.matching { it.name == 'verifyFast' }.configureEach { dependsOn('verifyCanonicalCustomProvidersRunConfigGuard') }
+project.ext.bcCanonicalProviderRows = {
+        if (!binding.present) throw new GradleException('Native Anchors requires canonical BC_CUSTOM_MOD_JAR_DIR; no historical/sibling fallback')
+        providersRequired.collect { row ->
+            def path = ordinary(file(binding.get()).toPath().resolve(row.artifact).toFile())
+            byte[] metadata
+            new ZipFile(path.toFile()).withCloseable { zip ->
+                def entry = zip.getEntry('META-INF/better-content-source.properties')
+                if (entry == null) throw new GradleException('Canonical provider lacks source identity: ' + path)
+                metadata = zip.getInputStream(entry).withCloseable { it.readAllBytes() }
+                def properties = new Properties()
+                properties.load(new ByteArrayInputStream(metadata))
+                if (properties.getProperty('schema') != 'bc.custom_mod_source.v1' || properties.getProperty('repository') != row.repository || properties.getProperty('mod_id') != row.mod_id)
+                    throw new GradleException('Canonical provider source identity differs: ' + path)
+                def tomlEntry = zip.getEntry('META-INF/mods.toml')
+                if (tomlEntry == null) throw new GradleException('Canonical provider lacks mod metadata: ' + path)
+                def toml = zip.getInputStream(tomlEntry).withCloseable { it.getText('UTF-8') }
+                if (!(toml =~ /modId\s*=\s*"${row.mod_id}"/).find()) throw new GradleException('Canonical provider mod identity differs: ' + path)
+            }
+            def props = new Properties()
+            props.load(new ByteArrayInputStream(metadata))
+            if (!(props.getProperty('commit') ==~ /[a-f0-9]{40}/)) throw new GradleException('Invalid canonical source commit')
+            [coordinate: row.notation, role: 'canonical_producer', repository: row.repository, commit: props.getProperty('commit'),
+             mod_id: row.mod_id, artifact: row.artifact, path: path.toString(), sha256: sha(Files.readAllBytes(path)), source_metadata_sha256: sha(metadata)]
+        }
+}
+apply from: 'gradle/native-sdk-roles.gradle'
+tasks.matching { it.name == 'runGameTestServer' }.configureEach {
+    classpath += fixture.runtimeClasspath
+    doFirst {
+        def rows = project.ext.bcCanonicalProviderRows()
+        byte[] bytes = JsonOutput.prettyPrint(JsonOutput.toJson([schema: 'bc.anchors.canonical_providers.v1', attempt: token, providers: rows])).getBytes('UTF-8')
+        def output = receipt.toPath().toAbsolutePath().normalize()
+        for (def part = output; part != null; part = part.parent)
+            if (Files.isSymbolicLink(part)) throw new GradleException('Symlink canonical provider output: ' + part)
+        // Forge creates this UUID working directory only in its later JavaExec action.
+        // The pre-launch receipt is our fresh output, not an input from an earlier run.
+        Files.createDirectories(output.parent)
+        Files.write(output, bytes, StandardOpenOption.CREATE_NEW)
+        systemProperty('bc.anchors.providers.binding.sha256', sha(bytes))
+    }
+    doLast {
+        def proof = new groovy.json.JsonSlurper().parse(new File(nativeRun.workingDirectory, 'canonical-compat-proof.json'))
+        if (proof.schema != 'bc.anchors.canonical_providers.v1' || proof.attempt != token || proof.actualTargetObserved != true ||
+            proof.productionTransactionFields != 1 || proof.productionHandlerMask != 255 ||
+            proof.providers?.collect { it.mod_id } != providersRequired.collect { it.mod_id } ||
+            !proof.providers.every { it.loadedSourceMetadataMatches == true })
+            throw new GradleException('Missing actual canonical-provider/production-Registrate-merge binding')
+    }
+}

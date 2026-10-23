@@ -180,6 +180,36 @@ The canonical identity is a clean break. Legacy mod IDs, resource namespaces, co
 
 Run `./gradlew verifyFast` for deterministic checks and the staged runtime artifact. Run `./gradlew verifyFull` for runtime changes; it additionally executes all twelve production GameTests.
 
+Native SOURCE execution now requires `BC_CUSTOM_MOD_JAR_DIR` with the exact Root-qualified,
+source-stamped `better-compat-fixes-0.1.9.jar` and `better-gameplay-notices-1.0.0.jar`.
+The Root provider DAG owns qualification/staging before this consumer; sibling build outputs,
+historical/bundled artifacts and a copied fixture repair are not substitutes. Standalone synthetic
+role controls and pure GLM projection/archive/ownership controls remain unbound. The latter consume
+real pinned SDK archives, not a smaller native qualification graph; only the owning native producer
+binding admits the exact whole graph and both canonical peers before source projection.
+Native invocation fails closed without the binding. Standalone CI cannot claim
+native acceptance without provisioning this canonical workspace/input contract.
+The exact whole declared SDK now has 18 authored upstream original/API coordinates plus two explicit
+native canonical-producer coordinates, closed by `gradle/native-sdk-roles.json`. Original-role
+projection happens only after whole-graph equality, with full expected/actual/missing/extra/duplicate
+error diagnostics. Prepared manifests retain all configuration/coordinate roles, dynamic peer JAR and
+source-metadata hashes, 40-hex source commits and peer data-resource hashes. Compat contributes an
+explicitly reviewed empty `replace:false, entries:[]` GLM index: its runtime stack multiplicity is
+retained without inventing original-domain rows. New or changed peer GLM content fails closed.
+The 36 canonical resources, original16/typed13 projection and twelve GameTests are unchanged.
+The trusted Root caller remains the sole owning-gate authority; metadata alone is not qualification.
+Both canonical-release and Source-control staging work without a Source-control-only receipt or
+parallel Root session/checkpoint serializer.
+
+The nonce-bound `canonical-custom-providers.json` and `canonical-compat-proof.json` validate
+canonical bytes, source schema/repository/mod IDs and metadata from the actually loaded mapped
+providers. A SOURCE-only `IMixinConfigPlugin.postApply` observer reads—but never mutates—the
+framework-supplied final Registrate node, requiring one private/final production transaction field
+and all eight methods attributed to the pinned production repair Mixin. It retains only primitive
+classification results, not the node, and cannot substitute a fixture implementation. The owning
+Compat native-present functional controls remain required; this merge/identity witness and the
+unchanged twelve GameTests are not universal deadlock freedom or proof of a historical caller.
+
 Seven generated cases exercise each variant's real block entity and public power boundary: Forge energy/fluid/item capabilities, Ars Source, PneumaticCraft air, Goety player interaction, and Create kinetic speed input. They verify acceptance, resource rejection or simulation where applicable, configured payment, and depletion. Kinetic coverage checks the anchor's speed threshold and buffer; it does not claim a complete external Create network fixture.
 
 The remaining tests cover the actual Ars SourceManager payment, nine fully ticking Forge tickets across acquisition, starvation, redstone disable/re-enable and removal, and saved ownership/block identity round-trips. Ticket assertions inspect Forge's owned records by mod ID and block position, independently of chunks held open by the GameTest framework. Lifecycle coverage uses the shared ticket controller through a Flux anchor; ownership serialization is a save/load round-trip within one server process.

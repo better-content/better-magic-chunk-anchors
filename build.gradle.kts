@@ -119,6 +119,7 @@ apply(from = "gradle/gametest-evidence.gradle")
 apply(from = "gradle/native-gametest-fixture.gradle")
 apply(from = "gradle/native-canonical-policy.gradle")
 apply(from = "gradle/native-glm.gradle")
+apply(from = "gradle/native-canonical-providers.gradle")
 
 // Audit every runtime source set, including nonshipping native hooks; exclude only declared JUnit controls.
 tasks.named<Test>("test") {

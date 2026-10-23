@@ -122,7 +122,10 @@ class GlmRecipeControls(unittest.TestCase):
             if name == 'partial': output.mkdir(parents=True); (output / 'partial').write_text('retain')
             if name == 'symlink':
                 outside = E / 'outside'; outside.mkdir(); parent.mkdir(parents=True); output.symlink_to(outside, target_is_directory=True)
-            with self.assertRaises((p.GlmError, ValueError)): p.prepare(binding, ROOT, 'anchors', output.resolve() if name != 'symlink' else output.absolute())
+            reason = {'foreign': 'Expected actual owning', 'partial': 'Refuse reused/partial',
+                      'symlink': 'Symlinked fixture output ancestry'}[name]
+            with self.assertRaisesRegex(p.GlmError, reason):
+                p.prepare(binding, ROOT, 'anchors', output.resolve() if name != 'symlink' else output.absolute())
 
 if __name__ == '__main__':
     print('Retained actual-recipe SOURCE controls, not native:', E, flush=True)

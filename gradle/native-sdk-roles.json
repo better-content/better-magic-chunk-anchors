@@ -1,0 +1,118 @@
+{
+  "schema": "bc.canonical_sdk_roles.v1",
+  "extra_declaration_configurations": [],
+  "roles": [
+    {
+      "coordinate": "bettercontent.local.anchors:better-compat-fixes:0.1.9",
+      "role": "canonical_producer",
+      "repository": "better-compat-fixes",
+      "mod_id": "better_compat_fixes",
+      "artifact": "better-compat-fixes-0.1.9.jar",
+      "reviewed_glm_indexes": {
+        "data/forge/loot_modifiers/global_loot_modifiers.json": {
+          "sha256": "26bfe32a9cfd700841860980530ca1b01d3f02966be36d273398cb49d5f64df0",
+          "replace": false,
+          "entries": []
+        }
+      }
+    },
+    {
+      "coordinate": "bettercontent.local.anchors:better-gameplay-notices:1.0.0",
+      "role": "canonical_producer",
+      "repository": "better-gameplay-notices",
+      "mod_id": "better_gameplay_notices",
+      "artifact": "better-gameplay-notices-1.0.0.jar"
+    },
+    {
+      "coordinate": "com.simibubi.create:create-1.20.1:6.0.8-291",
+      "role": "upstream_original",
+      "sha256": "ba2af6811a8591ac73050b34d6d8e2d11598bab6e4ee90b3eb163f4351dca304"
+    },
+    {
+      "coordinate": "com.tterrag.registrate:Registrate:MC1.20-1.3.3",
+      "role": "upstream_original",
+      "sha256": "226862d4638b77273f4627fbac871aa0b3af584dde377f4ce2cb0c7cc228cf00"
+    },
+    {
+      "coordinate": "curse.maven:architectury-api-419699:5137938",
+      "role": "upstream_original",
+      "sha256": "218b471d0b8a1f6cda14cfc1beb9eeb0df54304500acc6c5613d9b88ec65d9af"
+    },
+    {
+      "coordinate": "curse.maven:ars-nouveau-401955:6688854",
+      "role": "upstream_original",
+      "sha256": "1f1debc282a0c379c1141f2840ea294eede6f6b544c589663f40bbe17b59a1af"
+    },
+    {
+      "coordinate": "curse.maven:blood-magic-224791:7956981",
+      "role": "upstream_original",
+      "sha256": "e88af6d512e522a47286fc87015ed290c5d41be7a51c3ef59a391e85bc1fd4a0"
+    },
+    {
+      "coordinate": "curse.maven:curios-309927:6418456",
+      "role": "upstream_original",
+      "sha256": "1e817919a35b37cf30524aaec73f0ca5130452f23f168f844854df282eb8e51f"
+    },
+    {
+      "coordinate": "curse.maven:emi-580555:8081375",
+      "role": "upstream_original",
+      "sha256": "92784dcf5222d72983a420c90f2e9240468ee0fece96f757c82d7884b6cbdb72"
+    },
+    {
+      "coordinate": "curse.maven:geckolib-388172:7553267",
+      "role": "upstream_original",
+      "sha256": "8b90e11871a58b63816e99c529e6c932bc88e6beb3fec97ad618e22217df3250"
+    },
+    {
+      "coordinate": "curse.maven:goety-586095:8087429",
+      "role": "upstream_original",
+      "sha256": "2d1a9c2621980af2425ebbb1fde62b6a12ce90f4733120d953a2af2b5cbf28a9"
+    },
+    {
+      "coordinate": "curse.maven:jeed-532286:6172935",
+      "role": "upstream_original",
+      "sha256": "841dee59c98c1b490073866a47dbd77f13125d425a8c6a8e850cf8c43e699a83"
+    },
+    {
+      "coordinate": "curse.maven:lodestone-616457:6213794",
+      "role": "upstream_original",
+      "sha256": "e9f8b7bc70ba99d97005f2acee2061b149785fbae3c1e37db08c79197bcc7c2d"
+    },
+    {
+      "coordinate": "curse.maven:malum-484064:6646111",
+      "role": "upstream_original",
+      "sha256": "ceda6ce4cc19de21ff6c21a732d8f9270ecc83cdae69027b13aaa24b536307f8"
+    },
+    {
+      "coordinate": "curse.maven:patchouli-306770:7731017",
+      "role": "upstream_original",
+      "sha256": "05f7b5d52f6b8f0fd7f8b4822fa07a192d1394d83a264309c9d221d6d4fd21c5"
+    },
+    {
+      "coordinate": "curse.maven:pneumaticcraft-repressurized-281849:7307654",
+      "role": "upstream_original",
+      "sha256": "d33c6d8ca709ba9b5b238b8919a06c2b2dc3903535f452aac965a15d01713d43"
+    },
+    {
+      "coordinate": "curse.maven:power-grid-1321420:7714613",
+      "role": "upstream_original",
+      "sha256": "390f8d34b8bdf4c55ed198f51e03a37ceb74e717cfdebdff315c450187f74b3a"
+    },
+    {
+      "coordinate": "dev.engine-room.flywheel:flywheel-forge-1.20.1:1.0.5",
+      "role": "upstream_original",
+      "sha256": "316ca250f19244956b5f0cd75329309ea65a77b4b8da854389b6a9222e7f427c"
+    },
+    {
+      "coordinate": "io.github.llamalad7:mixinextras-forge:0.5.4",
+      "role": "upstream_api",
+      "sha256": "7922899a121a27f63a69a9ffe57470d8719cc52d239dfa9408e15d32a7b4c264"
+    },
+    {
+      "coordinate": "net.createmod.ponder:Ponder-Forge-1.20.1:1.0.91",
+      "role": "upstream_original",
+      "sha256": "86e6b64372aba6d9c56f2c35725ea26d8febf2c75eed9950566e7f2849443b34"
+    }
+  ],
+  "declared_file_dependencies": []
+}

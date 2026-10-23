@@ -172,6 +172,11 @@ def prepare(bindings_path, pack_root, profile, output):
     scope_bytes = read(SCOPE, inputs)
     scope = json.loads(scope_bytes)
     require(scope['schema'] == 'bc.anchors.fixture_glm_scope.v1', 'Owned scope schema')
+    import canonical_sdk_roles
+    role_spec = json.loads(read(ROOT / 'gradle/native-sdk-roles.json', inputs))
+    for name in ('scripts/canonical_sdk_roles.py', 'gradle/native-sdk-roles.gradle', 'gradle/native-canonical-providers.gradle'):
+        read(ROOT / name, inputs)
+    sdk_roles = canonical_sdk_roles.validate(bindings, role_spec, lambda path: read(path, inputs))
     expected = scope['profiles'][profile]['originals']
     actual = bindings['originals']
     require([x['coordinate'] for x in actual] == [x['coordinate'] for x in expected], 'Actual original SDK graph differs')
@@ -216,7 +221,12 @@ def prepare(bindings_path, pack_root, profile, output):
     for name, expected_hash in scope['runtime_class_witnesses'].items():
         found = [c['classes'][name] for c in runtime if name in c['classes']]
         require(found == [expected_hash], 'Actual pinned runtime decoder/ordering class missing/ambiguous/drifted: ' + name)
-    original_index_stack = sorted(index['sha256'] for c in inventory for index in c['indexes'])
+    peer_indexes = [index for role in sdk_roles['roles'] if role['role'] == 'canonical_producer'
+                    for index in role.get('runtime_glm_indexes', {}).values()]
+    require(all(index['entries'] == [] and index['replace'] is False for index in peer_indexes),
+            'Nonempty custom GLM peer requires a separately reviewed domain expansion')
+    original_index_stack = sorted([index['sha256'] for c in inventory for index in c['indexes']] +
+                                  [index['sha256'] for index in peer_indexes])
     runtime_index_stack = sorted(index['sha256'] for c in runtime for index in c['indexes'])
     require(runtime_index_stack == original_index_stack, 'Actual runtime index graph/multiplicity differs; expose every extra index')
     declared = {x for c in runtime for index in c['indexes'] for x in index['entries']}
@@ -237,7 +247,8 @@ def prepare(bindings_path, pack_root, profile, output):
         'pack_id':'zzzz_bc_source_anchors_malum_policy', 'scope_sha256':sha(scope_bytes),
         'source_controls_only': bool(bindings.get('source_control_only', False)),
         'canonical_root_index_sha256':sha(root_bytes), 'index_sha256':sha(index_bytes),
-        'projection':projection, 'inputs':inputs, 'absent_root_overrides':absent}
+        'projection':projection, 'inputs':inputs, 'absent_root_overrides':absent,
+        'sdk_role_binding':sdk_roles, 'sdk_bindings_path':str(Path(bindings_path).resolve())}
     verify_inputs(result)
     output.mkdir(parents=True)
     write_new(output/'pack'/INDEX, index_bytes)
@@ -265,6 +276,9 @@ def verify_inputs(data):
 def verify(path):
     data = json.loads(path.read_bytes())
     verify_inputs(data)
+    import canonical_sdk_roles
+    require(canonical_sdk_roles.validate(json.loads(Path(data['sdk_bindings_path']).read_bytes()),
+        json.loads((ROOT / 'gradle/native-sdk-roles.json').read_bytes())) == data['sdk_role_binding'], 'SDK role binding changed')
     scope = json.loads(SCOPE.read_bytes())
     require(data['schema'] == 'bc.anchors.fixture_glm_manifest.v1' and sha(SCOPE.read_bytes()) == data['scope_sha256'], 'Manifest/scope schema or hash drift')
     projection = data['projection']

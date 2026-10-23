@@ -1,0 +1,53 @@
+// Exact declared SDK union, not an unknown-coordinate filter. Evaluated only by owning preparation.
+import groovy.json.JsonSlurper
+
+def roleSpec = new JsonSlurper().parse(file('gradle/native-sdk-roles.json'))
+def fixture = sourceSets.getByName('nativeFixture')
+def normal = { String value -> value.split(':').take(3).join(':').replaceAll(/_mapped_.*/, '') }
+def apiArchives = configurations.create('canonicalSdkExplicitApiArchives') {
+    canBeResolved = true; canBeConsumed = false; transitive = false
+}
+roleSpec.roles.findAll { it.explicit_api_archive == true }.each { dependencies.add(apiArchives.name, it.coordinate) }
+tasks.register('verifyCanonicalSdkRoleControls') {
+    group = 'verification'
+    doLast { project.exec { commandLine('python3', '-B', 'scripts/test_canonical_sdk_roles.py') } }
+}
+tasks.matching { it.name == 'verifyFast' }.configureEach { dependsOn('verifyCanonicalSdkRoleControls') }
+project.ext.bcCanonicalSdkRoles = {
+    def configNames = ['implementation', 'runtimeOnly', fixture.runtimeOnlyConfigurationName] + (roleSpec.extra_declaration_configurations ?: [])
+    def declaredFiles = []
+    configNames.each { name ->
+        configurations.getByName(name).allDependencies.findAll { !(it.group && it.version) }.each { dependency ->
+            if (!(dependency instanceof org.gradle.api.artifacts.FileCollectionDependency))
+                throw new GradleException('Unknown/unversioned SDK dependency: ' + name + ':' + dependency)
+            dependency.files.files.each { entry -> declaredFiles.add(name + '|' + project.relativePath(entry)) }
+        }
+    }
+    declaredFiles.sort()
+    if (declaredFiles != (roleSpec.declared_file_dependencies ?: []).sort())
+        throw new GradleException('Declared SDK file graph drift: expected=' + roleSpec.declared_file_dependencies + '; actual=' + declaredFiles)
+    def entries = configNames.collectMany { name ->
+        configurations.getByName(name).allDependencies.findAll { it.group && it.version && !(it.group == 'net.minecraftforge' && it.name == 'forge') }
+            .collect { [configuration: name, coordinate: normal("${it.group}:${it.name}:${it.version}")] }
+    }
+    def duplicateDeclarations = entries.groupBy { it.configuration + '|' + it.coordinate }.findAll { k, v -> v.size() != 1 }.keySet().sort()
+    def actual = entries.collect { it.coordinate }.unique().sort()
+    def expected = roleSpec.roles.collect { it.coordinate }.sort()
+    def extras = actual - expected
+    def missing = expected - actual
+    if (actual != expected || expected.unique(false).size() != expected.size() || !duplicateDeclarations.isEmpty())
+        throw new GradleException('Whole declared SDK drift: expected=' + expected + '; actual=' + actual +
+            '; missing=' + missing + '; extra=' + extras + '; duplicates=' + duplicateDeclarations)
+    def peers = project.ext.bcCanonicalProviderRows()
+    def expectedPeers = roleSpec.roles.findAll { it.role == 'canonical_producer' }.collect { it.coordinate }.sort()
+    if (peers.collect { it.coordinate }.sort() != expectedPeers) throw new GradleException('Canonical provider role owner differs')
+    def rawApis = apiArchives.resolvedConfiguration.resolvedArtifacts.collect { artifact ->
+        def gav = artifact.moduleVersion.id
+        [coordinate: "${gav.group}:${gav.name}:${gav.version}".toString(), path: artifact.file.absolutePath]
+    }
+    [actual_declared_sdk_coordinates: actual, actual_declared_sdk_files: declaredFiles,
+     actual_declared_original_coordinates: roleSpec.roles.findAll { it.role != 'canonical_producer' }.collect { it.coordinate }.sort(),
+     declared_sdk_configuration_roles: entries,
+     canonical_providers: peers, upstream_api_archives: rawApis,
+     canonical_staging: file(providers.environmentVariable('BC_CUSTOM_MOD_JAR_DIR').get()).absolutePath]
+}
