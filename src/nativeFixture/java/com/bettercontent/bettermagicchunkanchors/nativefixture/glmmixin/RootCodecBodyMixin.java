@@ -25,6 +25,9 @@ abstract class RootCodecBodyMixin {
         require = 1, allow = 1, remap = false)
     private <A> Optional<A> anchors$originalRootBody(DataResult<A> original, Consumer<String> onError,
             Map<ResourceLocation, JsonElement> definitions, ResourceManager resources, ProfilerFiller profiler) {
+        var generic = com.bettercontent.bettermagicchunkanchors.nativefixture.glm.OriginalCodecDispatchProof.row();
+        if (generic != null) com.bettercontent.bettermagicchunkanchors.nativefixture.glm.OriginalCodecDispatchProof.body(
+            IGlobalLootModifier.DIRECT_CODEC, JsonOps.INSTANCE, definitions.get(new ResourceLocation(generic)), original);
         if (ArsDispatchScope.LIVE.activeArsParse()) {
             AnchorsFixtureGlm.originalRootBody(IGlobalLootModifier.DIRECT_CODEC, JsonOps.INSTANCE,
                 definitions.get(new ResourceLocation(ArsDispatchScope.ARS)), original);

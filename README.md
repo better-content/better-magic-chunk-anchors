@@ -112,8 +112,13 @@ actual returned selected codec. In that same original Ars-row/parse frame, the o
 DataResult must be genuine success with no error/partial, a nonnull exact Ars implementation and
 matching input/ops. The pinned inherited `Decoder.parse` forwards this same original decode result
 through Pair::getFirst into the manager's original builder/public collection; no identity-hash
-claim or native-object retention substitutes for that chain. The other eight outer codec types
-retain direct memoized identity checks.
+claim or native-object retention substitutes for that chain. A bounded scalar ledger additionally
+requires the original registered selection, successful root return, canonical input digest and loaded
+implementation/order for **every** declared row. The pinned Goety `add_loot` accessor also uses a
+nonmemoized supplier, so it is proved by that original-call chain rather than invoking a fresh getter.
+The seven genuinely memoized non-Ars types retain their additional direct identity checks.
+Missing/duplicate selection or root witnesses, partial/error results, wrong keys, changed inputs and
+loaded-body/order mismatches fail closed; pure ledger and compiled/native ABI controls cover these cases.
 
 Inactive early-bootstrap callbacks use a cheap pure scalar guard before fixture/Ars/FML helpers.
 Only active original frames use bounded public JDK stack metadata (names/descriptors, at most64;

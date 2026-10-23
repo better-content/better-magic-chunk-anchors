@@ -16,6 +16,8 @@ abstract class RegistryCodecDecodeMixin {
         at = @At("RETURN"), require = 2, allow = 2, remap = false)
     private void anchors$selectedRegisteredDecoder(DynamicOps<?> ops, Object input,
             CallbackInfoReturnable<DataResult<?>> callback) {
+        com.bettercontent.bettermagicchunkanchors.nativefixture.glm.OriginalCodecDispatchProof.registered(
+            this, ops, input, callback.getReturnValue());
         if (!ArsDispatchScope.LIVE.activeArsParse()) return;
         if (!ArsDispatchScope.LIVE.confirmOriginalDispatchTrace()) return;
         AnchorsFixtureGlm.selectedRegisteredDecoder(this, ops, input, callback.getReturnValue());

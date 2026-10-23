@@ -94,7 +94,9 @@ public final class FixtureGlmAbiTest {
             if (i instanceof JumpInsnNode jump && jump.getOpcode() == Opcodes.GOTO) skipsMemoizedArm = true;
         }
         assertTrue(field && getter && rule && skipsMemoizedArm);
-        assertEquals(1, code.stream().filter(i -> i instanceof MethodInsnNode m && m.owner.equals("net/minecraftforge/common/loot/IGlobalLootModifier") && m.name.equals("codec")).count(), "Other eight types keep direct memoized identity route");
+        assertEquals(1, code.stream().filter(i -> i instanceof MethodInsnNode m && m.owner.equals("net/minecraftforge/common/loot/IGlobalLootModifier") && m.name.equals("codec")).count(), "Seven memoized types keep direct identity; nonmemoized Goety uses the original dispatch witness");
+        assertEquals(1, code.stream().filter(i -> i instanceof MethodInsnNode m && m.owner.endsWith("/OriginalCodecDispatchProof")
+            && m.name.equals("requireLoaded")).count(), "Every actual loaded row must bind to its original input/registered selection/root return");
     }
 
     @Test public void actualCompiledPrivateHandlerPublicDispatcherAndArsOnlyBranch() throws Exception { shape(node(MIXIN), node(HELPER)); }

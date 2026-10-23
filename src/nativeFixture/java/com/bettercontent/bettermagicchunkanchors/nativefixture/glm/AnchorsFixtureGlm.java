@@ -154,10 +154,19 @@ public final class AnchorsFixtureGlm {
         proof.add("effectiveDefinitions", rows);
         return proof;
     }
+    public static void beginOriginalCodecProof() {
+        try {
+            List<String> ids = new ArrayList<>();
+            for (var row : manifest().getAsJsonObject("projection").getAsJsonArray("rows"))
+                ids.add(row.getAsJsonObject().get("id").getAsString());
+            OriginalCodecDispatchProof.begin(ids);
+        } catch (Exception error) { failed = true; }
+    }
     /** Scope markers only: never redirect, invoke, cancel or change the original parse. */
     public static void beforeOriginalParse(LootModifierManager manager, Map<ResourceLocation, JsonElement> definitions,
             ResourceLocation location, JsonElement input) {
         try {
+            OriginalCodecDispatchProof.before(location, input);
             require(manager.getClass() == LootModifierManager.class, "Unexpected original parse owner");
             JsonArray rows = manifest().getAsJsonObject("projection").getAsJsonArray("rows");
             List<String> ids = new ArrayList<>(), types = new ArrayList<>();
@@ -170,7 +179,7 @@ public final class AnchorsFixtureGlm {
         } catch (Exception error) { failed = true; ArsDispatchScope.LIVE.reject(); }
     }
     public static void afterOriginalParse(ResourceLocation location) {
-        try { ArsDispatchScope.LIVE.after(location.toString()); }
+        try { OriginalCodecDispatchProof.after(location); ArsDispatchScope.LIVE.after(location.toString()); }
         catch (Exception error) { failed = true; ArsDispatchScope.LIVE.reject(); }
     }
     /** Only reached after the pure scalar/JDK guard confirms the actual pinned original dispatch stack. */
@@ -227,7 +236,7 @@ public final class AnchorsFixtureGlm {
                 && registry.getCodec().getClass().getName().equals("net.minecraftforge.registries.ForgeRegistry$RegistryCodec"),
                 "Actual registered dispatch codec implementation differs");
             boolean arsProved = false;
-            Set<String> memoizedTypesProved = new HashSet<>();
+            Set<String> otherTypesProved = new HashSet<>();
             for (int i = 0; i < rows.size(); i++) {
                 ResourceLocation key = new ResourceLocation(rows.get(i).getAsJsonObject().get("codec").getAsString());
                 var registered = registry.getValue(key);
@@ -238,6 +247,8 @@ public final class AnchorsFixtureGlm {
                 var inputResource = resources.getResource(new ResourceLocation(inputId.getNamespace(), "loot_modifiers/" + inputId.getPath() + ".json")).orElseThrow();
                 DecodedRowProofRules.inputAndImplementation(key.toString(), owner.get("implementation_class").getAsString(),
                     loaded.get(i).getClass().getName(), actualInput, json(read(inputResource.open())));
+                OriginalCodecDispatchProof.requireLoaded(i, inputId, key,
+                    json(read(inputResource.open())), (net.minecraftforge.common.loot.IGlobalLootModifier) loaded.get(i));
                 if (key.toString().equals("ars_nouveau:dungeon_loot")) {
                     // Pinned DIRECT_CODEC decodes through the actual registered decoder; Ars codec()
                     // creates a fresh codec and MUST NOT be called by this observer.
@@ -245,14 +256,19 @@ public final class AnchorsFixtureGlm {
                         LootRegistry.STRUCTURE_MODDED_LOOT_IMPORTER.get(), registry.getKey(registered).toString());
                     arsProved = true;
                 } else {
-                    var codec = ((net.minecraftforge.common.loot.IGlobalLootModifier) loaded.get(i)).codec();
-                    require(codec != null && registered == codec && key.equals(registry.getKey(codec)), "Actual memoized codec identity/order differs");
-                    memoizedTypesProved.add(key.toString());
+                    // Goety add_loot's pinned Supplier creates a fresh codec on every accessor call.
+                    // Its ORIGINAL registered decoder identity/root return is proved above, not guessed by codec().
+                    if (!key.toString().equals("goety:add_loot")) {
+                        var codec = ((net.minecraftforge.common.loot.IGlobalLootModifier) loaded.get(i)).codec();
+                        require(codec != null && registered == codec && key.equals(registry.getKey(codec)), "Actual memoized codec identity/order differs");
+                    }
+                    otherTypesProved.add(key.toString());
                 }
             }
-            require(arsProved && memoizedTypesProved.size() == 8, "Incomplete Ars/eight memoized type proof");
+            require(arsProved && otherTypesProved.size() == 8, "Incomplete Ars/eight other original dispatch type proofs");
             proof.addProperty("arsRegisteredDecoderInputImplementationOrder", arsProved);
-            proof.addProperty("memoizedDirectIdentityTypeCount", memoizedTypesProved.size());
+            proof.addProperty("nonArsOriginalDispatchTypeCount", otherTypesProved.size());
+            proof.addProperty("allRowsOriginalRegisteredDispatchAndRootReturn", true);
             proof.addProperty("originalDirectParseBrackets", dispatchProof.originalParseBrackets());
             proof.addProperty("selectedArsRegistryDecoderReturns", dispatchProof.selectedArsDecoderReturns());
             proof.addProperty("originalArsRootBodyReturns", dispatchProof.originalRootBodyReturns());
@@ -266,7 +282,7 @@ public final class AnchorsFixtureGlm {
         } catch (Exception error) {
             failed = true;
             throw new IllegalStateException("Required Anchors native GLM load proof failed", error);
-        }
+        } finally { OriginalCodecDispatchProof.end(); }
     }
     @Mod.EventBusSubscriber(modid = "better_magic_chunk_anchors", bus = Mod.EventBusSubscriber.Bus.FORGE)
     public static final class Verify {

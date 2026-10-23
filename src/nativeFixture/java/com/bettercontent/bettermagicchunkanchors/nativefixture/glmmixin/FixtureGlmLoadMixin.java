@@ -21,6 +21,12 @@ import java.util.Map;
 @Mixin(value = LootModifierManager.class, remap = false)
 abstract class FixtureGlmLoadMixin {
     @Inject(method = "apply(Ljava/util/Map;Lnet/minecraft/server/packs/resources/ResourceManager;Lnet/minecraft/util/profiling/ProfilerFiller;)V",
+        at = @At("HEAD"), require = 1, allow = 1, remap = false)
+    private void anchors$beginOriginalCodecProof(Map<ResourceLocation, JsonElement> definitions,
+            ResourceManager resources, ProfilerFiller profiler, CallbackInfo callback) {
+        AnchorsFixtureGlm.beginOriginalCodecProof();
+    }
+    @Inject(method = "apply(Ljava/util/Map;Lnet/minecraft/server/packs/resources/ResourceManager;Lnet/minecraft/util/profiling/ProfilerFiller;)V",
         at = @At("RETURN"), require = 1, allow = 1, remap = false)
     private void anchors$observeActualNativeReturn(Map<ResourceLocation, JsonElement> definitions,
             ResourceManager resources, ProfilerFiller profiler, CallbackInfo callback) {

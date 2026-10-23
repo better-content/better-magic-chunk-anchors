@@ -105,6 +105,7 @@ tasks.register('nativeGlmAbiTest', Test) {
         includeTestsMatching('com.bettercontent.bettermagicchunkanchors.nativefixture.ArsDispatchScopeTest')
         includeTestsMatching('com.bettercontent.bettermagicchunkanchors.nativefixture.ArsDecodeObserverAbiTest')
         includeTestsMatching('com.bettercontent.bettermagicchunkanchors.nativefixture.RootParseExtractionTest')
+        includeTestsMatching('com.bettercontent.bettermagicchunkanchors.nativefixture.CodecDispatchLedgerTest')
     }
     systemProperty('bc.anchors.glm.compiledClasses', fixture.output.classesDirs.asPath)
 }

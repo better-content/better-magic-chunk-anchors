@@ -54,7 +54,9 @@ public final class ArsDecodeObserverAbiTest {
         assertEquals(returns, value(annotation, "require")); assertEquals(returns, value(annotation, "allow"));
         assertEquals(Boolean.FALSE, value(annotation, "remap"));
         assertEquals("RETURN", value((AnnotationNode) ((List<?>) value(annotation, "at")).get(0), "value"));
-        var calls = calls(handler);
+        assertEquals(1, calls(handler).stream().filter(c -> c.owner.equals(BASE + "glm/OriginalCodecDispatchProof") && c.name.equals("registered")).count());
+        var calls = calls(handler).stream().filter(c -> !c.owner.equals(BASE + "glm/OriginalCodecDispatchProof")
+            && !c.owner.equals("org/spongepowered/asm/mixin/injection/callback/CallbackInfoReturnable")).toList();
         assertEquals(SCOPE, calls.get(0).owner); assertEquals("activeArsParse", calls.get(0).name);
         assertEquals(SCOPE, calls.get(1).owner); assertEquals(guard, calls.get(1).name);
         assertTrue(real(handler).subList(0, real(handler).indexOf(calls.get(1))).stream().anyMatch(i -> i.getOpcode() == Opcodes.RETURN), "Inactive early callback must return before helper/FML/input lookup");
@@ -80,7 +82,8 @@ public final class ArsDecodeObserverAbiTest {
         assertEquals("INVOKE", value(at, "value"));
         assertEquals("Lcom/mojang/serialization/DataResult;resultOrPartial(Ljava/util/function/Consumer;)Ljava/util/Optional;", value(at, "target"));
         var calls = calls(handler);
-        assertEquals(SCOPE, calls.get(0).owner); assertEquals("activeArsParse", calls.get(0).name);
+        assertEquals(BASE + "glm/OriginalCodecDispatchProof", calls.get(0).owner); assertEquals("row", calls.get(0).name);
+        assertEquals(1, calls.stream().filter(c -> c.owner.equals(BASE + "glm/OriginalCodecDispatchProof") && c.name.equals("body")).count());
         assertEquals(1, calls.stream().filter(c -> c.owner.equals(HELPER) && c.name.equals("originalRootBody")).count());
         var extraction = calls.stream().filter(c -> c.owner.equals("com/mojang/serialization/DataResult") && c.name.equals("resultOrPartial")).toList();
         assertEquals(1, extraction.size());
@@ -92,6 +95,13 @@ public final class ArsDecodeObserverAbiTest {
         assertTrue(instructions.stream().noneMatch(insn -> insn.getOpcode() == Opcodes.ATHROW));
     }
 
+    @Test public void actualPinnedGoetyAddLootAccessorIsNotMemoized() throws Exception {
+        var goety = node(sdk("com/Polarice3/Goety/common/loot/AddItemLootModifier"));
+        assertEquals(1, calls(method(goety, "codec", null)).stream().filter(c -> c.owner.equals("java/util/function/Supplier") && c.name.equals("get")).count());
+        assertFalse(calls(method(goety, "<clinit>", null)).stream().anyMatch(c -> c.name.equals("memoize")));
+        assertTrue(goety.methods.stream().flatMap(m -> calls(m).stream()).anyMatch(c ->
+            c.owner.equals("com/mojang/serialization/codecs/RecordCodecBuilder") && c.name.equals("create")));
+    }
     @Test public void actualPublicTargetsOriginalCallCardinalityAndLiveTypedLocals() throws Exception {
         String registry = "net/minecraftforge/registries/ForgeRegistry$RegistryCodec", root = "com/mojang/serialization/MapCodec$MapCodecCodec";
         for (String owner : List.of(registry, root)) {
@@ -151,6 +161,16 @@ public final class ArsDecodeObserverAbiTest {
             assertEquals("(Ljava/util/Map;Lnet/minecraft/server/packs/resources/ResourceManager;Lnet/minecraft/util/profiling/ProfilerFiller;Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;" + captured + (name.contains("before") ? "Lcom/google/gson/JsonElement;" : "") + ")V", handler.desc);
             assertFalse(calls(handler).stream().anyMatch(c -> c.name.equals("parse") || c.name.equals("decode")));
         }
+        var generic = compiled(BASE + "glm/OriginalCodecDispatchProof");
+        var genericRegistered = real(method(generic, "registered", null));
+        var firstCall = calls(method(generic, "registered", null)).get(0);
+        assertEquals(generic.name, firstCall.owner); assertEquals("active", firstCall.name);
+        int nativeLookup = -1;
+        for (int n = 0; n < genericRegistered.size(); n++) if (genericRegistered.get(n) instanceof FieldInsnNode f
+            && f.owner.equals("net/minecraftforge/registries/ForgeRegistries")) { nativeLookup = n; break; }
+        assertTrue(nativeLookup > 0);
+        assertTrue(genericRegistered.subList(0, nativeLookup).stream().anyMatch(i -> i.getOpcode() == Opcodes.RETURN),
+            "Generic inactive registry callbacks must return before Forge lookup");
         var scalarScope = compiled(SCOPE);
         assertFalse(scalarScope.fields.stream().anyMatch(f -> f.desc.contains("ThreadLocal")), "Inactive ThreadLocal.get must not create bootstrap entries");
         assertFalse(calls(method(scalarScope, "activeArsParse", null)).stream().anyMatch(m -> List.of("put", "set", "compute", "computeIfAbsent").contains(m.name)));
