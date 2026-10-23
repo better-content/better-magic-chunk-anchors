@@ -199,7 +199,7 @@ public final class AnchorsFixtureGlm {
             // public DIRECT constant can supply the root result; never manufacture MapCodec.codec().
             if (!DecodedRowProofRules.existingRootReceiver(receiver, net.minecraftforge.common.loot.IGlobalLootModifier.DIRECT_CODEC)) return;
             if (!ArsDispatchScope.LIVE.confirmOriginalRootTrace()) return;
-            Object body = DecodedRowProofRules.successfulPairValue(result);
+            Object body = DecodedRowProofRules.successfulParseValue(result);
             boolean full = body != null;
             boolean actual = ops == com.mojang.serialization.JsonOps.INSTANCE && input instanceof JsonElement jsonInput
                 && ArsDispatchScope.LIVE.originalInput(sha(jsonInput.toString().getBytes(StandardCharsets.UTF_8)))

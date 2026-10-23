@@ -13,6 +13,11 @@ public final class DecodedRowProofRules {
         return value instanceof com.mojang.datafixers.util.Pair<?, ?> pair ? pair.getFirst() : null;
     }
 
+    /** Codec.parse has already projected the successful decode Pair to its body. */
+    public static Object successfulParseValue(com.mojang.serialization.DataResult<?> result) {
+        return result == null || result.error().isPresent() ? null : result.result().orElse(null);
+    }
+
     public static boolean existingRootReceiver(Object receiver, Object publicDirectConstant) {
         return receiver != null && receiver == publicDirectConstant;
     }

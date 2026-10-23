@@ -104,9 +104,21 @@ public final class ArsDispatchScope {
         if (!pinnedDispatchTrace(captureTrace())) { reject(); return false; }
         return true;
     }
+    public static boolean pinnedRootResultTrace(List<Trace> trace) {
+        Trace apply = new Trace("net.minecraftforge.common.loot.LootModifierManager", "apply", APPLY);
+        Trace callback = new Trace("com.bettercontent.bettermagicchunkanchors.nativefixture.glm.AnchorsFixtureGlm",
+            "originalRootBody", "(Ljava/lang/Object;Lcom/mojang/serialization/DynamicOps;Ljava/lang/Object;Lcom/mojang/serialization/DataResult;)V");
+        if (trace.size() > STACK_LIMIT || count(trace, apply) != 1 || count(trace, callback) != 1) return false;
+        int a = trace.indexOf(apply);
+        if (a < 2 || !trace.get(a - 2).equals(callback)) return false;
+        Trace redirect = trace.get(a - 1);
+        return redirect.owner().equals(apply.owner()) && redirect.method().endsWith("$anchors$originalRootBody")
+            && redirect.descriptor().equals("(Lcom/mojang/serialization/DataResult;Ljava/util/function/Consumer;Ljava/util/Map;Lnet/minecraft/server/packs/resources/ResourceManager;Lnet/minecraft/util/profiling/ProfilerFiller;)Ljava/util/Optional;")
+            && trace.stream().noneMatch(t -> t.owner().equals("com.mojang.serialization.Decoder") && t.method().equals("parse"));
+    }
     public boolean confirmOriginalRootTrace() {
         if (!activeArsParse()) return false;
-        if (!pinnedRootTrace(captureTrace())) { reject(); return false; }
+        if (!pinnedRootResultTrace(captureTrace())) { reject(); return false; }
         return true;
     }
     public void selectedDecoder(boolean correctReceiverOpsKeyAndRegisteredValue, boolean fullSuccessfulResult) {

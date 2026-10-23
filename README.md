@@ -89,10 +89,14 @@ read-only outside `clean`. All actual runtime declarations and the16 included ra
 must match the declared graph; an extra row, unknown typed dependency, duplicate, included
 absence, Root-authored included override or changed pinned class bytes fails closed.
 `gameTestServer` alone receives the required private exact `LootModifierManager.apply` RETURN
-observer, BEFORE/AFTER observers at its **one original** DIRECT_CODEC parse call, and exactly two
-public decode RETURN observers: `ForgeRegistry$RegistryCodec.decode` (the selected registered
-codec) and `MapCodec$MapCodecCodec.decode` (the root body). The latter receiver must be the actual
-public `IGlobalLootModifier.DIRECT_CODEC` constant; the lazy registry-key codec is NOT the root.
+observer, BEFORE/AFTER observers at its **one original** DIRECT_CODEC parse call, a public
+`ForgeRegistry$RegistryCodec.decode` RETURN observer (the selected registered codec), and an
+observer of the original root parse DataResult at Forge's `resultOrPartial` extraction call site.
+The extraction runs exactly once with its original receiver/error consumer and returns its
+unchanged Optional. No extra parse/decode is performed. The pinned native call-site bytecode
+requires the actual public `IGlobalLootModifier.DIRECT_CODEC` constant and JsonOps; the lazy
+registry-key codec is NOT the root. Targeting the Forge call site avoids relying on transformation
+of DFU library classes already loaded before mod Mixins.
 The bracket captures only real pinned live locals with standard Mixin CAPTURE_FAILHARD, never an
 imaginary DataResult local. Compiled descriptor/cardinality controls pin both RegistryCodec exits,
 the one root exit and original parse call. Public typed dispatchers and ordinary helpers live

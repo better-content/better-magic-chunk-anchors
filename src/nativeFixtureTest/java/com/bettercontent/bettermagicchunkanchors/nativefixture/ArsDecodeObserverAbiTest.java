@@ -69,6 +69,29 @@ public final class ArsDecodeObserverAbiTest {
         }
     }
 
+    private static void rootObserver(ClassNode mixin) {
+        var target = mixin.invisibleAnnotations.stream().filter(a -> a.desc.endsWith("/Mixin;")).findFirst().orElseThrow();
+        assertEquals(List.of(org.objectweb.asm.Type.getObjectType("net/minecraftforge/common/loot/LootModifierManager")), value(target, "value"));
+        var handler = method(mixin, "anchors$originalRootBody", null);
+        var annotation = handler.visibleAnnotations.stream().filter(a -> a.desc.endsWith("/Redirect;")).findFirst().orElseThrow();
+        assertEquals(List.of("apply" + ArsDispatchScope.APPLY), value(annotation, "method"));
+        assertEquals(1, value(annotation, "require")); assertEquals(1, value(annotation, "allow"));
+        var at = (AnnotationNode) value(annotation, "at");
+        assertEquals("INVOKE", value(at, "value"));
+        assertEquals("Lcom/mojang/serialization/DataResult;resultOrPartial(Ljava/util/function/Consumer;)Ljava/util/Optional;", value(at, "target"));
+        var calls = calls(handler);
+        assertEquals(SCOPE, calls.get(0).owner); assertEquals("activeArsParse", calls.get(0).name);
+        assertEquals(1, calls.stream().filter(c -> c.owner.equals(HELPER) && c.name.equals("originalRootBody")).count());
+        var extraction = calls.stream().filter(c -> c.owner.equals("com/mojang/serialization/DataResult") && c.name.equals("resultOrPartial")).toList();
+        assertEquals(1, extraction.size());
+        var instructions = real(handler); int i = instructions.indexOf(extraction.get(0));
+        assertEquals(1, ((VarInsnNode) instructions.get(i - 2)).var);
+        assertEquals(2, ((VarInsnNode) instructions.get(i - 1)).var);
+        assertEquals(Opcodes.ARETURN, instructions.get(i + 1).getOpcode());
+        assertFalse(calls.stream().anyMatch(c -> List.of("parse", "decode", "cancel", "setReturnValue", "apply").contains(c.name)));
+        assertTrue(instructions.stream().noneMatch(insn -> insn.getOpcode() == Opcodes.ATHROW));
+    }
+
     @Test public void actualPublicTargetsOriginalCallCardinalityAndLiveTypedLocals() throws Exception {
         String registry = "net/minecraftforge/registries/ForgeRegistry$RegistryCodec", root = "com/mojang/serialization/MapCodec$MapCodecCodec";
         for (String owner : List.of(registry, root)) {
@@ -112,7 +135,7 @@ public final class ArsDecodeObserverAbiTest {
     }
     @Test public void actualCompiledObserversBracketOrderPrivateHandlersAndCheapInactiveGuards() throws Exception {
         observer(compiled(BASE + "glmmixin/RegistryCodecDecodeMixin"), "anchors$selectedRegisteredDecoder", 2, "selectedRegisteredDecoder", "confirmOriginalDispatchTrace");
-        observer(compiled(BASE + "glmmixin/RootCodecBodyMixin"), "anchors$originalRootBody", 1, "originalRootBody", "confirmOriginalParseOnStack");
+        rootObserver(compiled(BASE + "glmmixin/RootCodecBodyMixin"));
         var owner = compiled(BASE + "glmmixin/FixtureGlmLoadMixin");
         for (String name : List.of("anchors$beforeOriginalParse", "anchors$afterOriginalParse")) {
             var handler = method(owner, name, null); var annotation = inject(handler);
@@ -140,7 +163,7 @@ public final class ArsDecodeObserverAbiTest {
         }
         var root = method(helper, "originalRootBody", null);
         assertTrue(real(root).stream().anyMatch(i -> i instanceof FieldInsnNode f && f.owner.equals("net/minecraftforge/common/loot/IGlobalLootModifier") && f.name.equals("DIRECT_CODEC")));
-        assertTrue(calls(root).stream().anyMatch(m -> m.name.equals("successfulPairValue")));
+        assertTrue(calls(root).stream().anyMatch(m -> m.name.equals("successfulParseValue")));
         assertTrue(calls(root).stream().anyMatch(m -> m.name.equals("existingRootReceiver")));
         var selected = method(helper, "selectedRegisteredDecoder", null);
         assertTrue(calls(selected).stream().anyMatch(m -> m.name.equals("getCodec") && m.desc.equals("()Lcom/mojang/serialization/Codec;")));
@@ -155,6 +178,6 @@ public final class ArsDecodeObserverAbiTest {
         assertThrows(AssertionError.class, () -> observer(wrong, "anchors$selectedRegisteredDecoder", 2, "selectedRegisteredDecoder", "confirmOriginalDispatchTrace"));
         var guard = compiled(BASE + "glmmixin/RootCodecBodyMixin");
         calls(method(guard, "anchors$originalRootBody", null)).get(0).name = "wrongInactiveGuard";
-        assertThrows(AssertionError.class, () -> observer(guard, "anchors$originalRootBody", 1, "originalRootBody", "confirmOriginalParseOnStack"));
+        assertThrows(AssertionError.class, () -> rootObserver(guard));
     }
 }
