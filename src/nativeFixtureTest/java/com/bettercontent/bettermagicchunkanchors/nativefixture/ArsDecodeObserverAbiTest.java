@@ -143,7 +143,8 @@ public final class ArsDecodeObserverAbiTest {
             assertEquals(1, value(annotation, "require")); assertEquals(1, value(annotation, "allow"));
             var at = (AnnotationNode) ((List<?>) value(annotation, "at")).get(0);
             assertEquals("INVOKE", value(at, "value"));
-            assertEquals("Lcom/mojang/serialization/Codec;parse" + ArsDispatchScope.DECODE, value(at, "target"));
+            assertEquals(name.contains("before") ? "Lcom/mojang/serialization/Codec;parse" + ArsDispatchScope.DECODE
+                : "Lcom/mojang/serialization/DataResult;resultOrPartial(Ljava/util/function/Consumer;)Ljava/util/Optional;", value(at, "target"));
             assertEquals(name.contains("before") ? "BEFORE" : "AFTER", ((String[]) value(at, "shift"))[1]);
             assertEquals("CAPTURE_FAILHARD", ((String[]) value(annotation, "locals"))[1]);
             String captured = "Lcom/google/common/collect/ImmutableMap$Builder;Ljava/util/List;Lnet/minecraft/resources/ResourceLocation;Ljava/util/Iterator;Lnet/minecraft/resources/ResourceLocation;";

@@ -36,7 +36,7 @@ abstract class FixtureGlmLoadMixin {
         AnchorsFixtureGlm.beforeOriginalParse((LootModifierManager) (Object) this, definitions, location, json);
     }
     @Inject(method = "apply(Ljava/util/Map;Lnet/minecraft/server/packs/resources/ResourceManager;Lnet/minecraft/util/profiling/ProfilerFiller;)V",
-        at = @At(value = "INVOKE", target = "Lcom/mojang/serialization/Codec;parse(Lcom/mojang/serialization/DynamicOps;Ljava/lang/Object;)Lcom/mojang/serialization/DataResult;", shift = At.Shift.AFTER),
+        at = @At(value = "INVOKE", target = "Lcom/mojang/serialization/DataResult;resultOrPartial(Ljava/util/function/Consumer;)Ljava/util/Optional;", shift = At.Shift.AFTER),
         locals = LocalCapture.CAPTURE_FAILHARD, require = 1, allow = 1, remap = false)
     private void anchors$afterOriginalParse(Map<ResourceLocation, JsonElement> definitions,
             ResourceManager resources, ProfilerFiller profiler, CallbackInfo callback,

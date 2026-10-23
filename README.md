@@ -89,7 +89,8 @@ read-only outside `clean`. All actual runtime declarations and the16 included ra
 must match the declared graph; an extra row, unknown typed dependency, duplicate, included
 absence, Root-authored included override or changed pinned class bytes fails closed.
 `gameTestServer` alone receives the required private exact `LootModifierManager.apply` RETURN
-observer, BEFORE/AFTER observers at its **one original** DIRECT_CODEC parse call, a public
+observer, a bracket from BEFORE its **one original** DIRECT_CODEC parse call through AFTER
+its original result extraction (so the root-return witness remains in the active row), a public
 `ForgeRegistry$RegistryCodec.decode` RETURN observer (the selected registered codec), and an
 observer of the original root parse DataResult at Forge's `resultOrPartial` extraction call site.
 The extraction runs exactly once with its original receiver/error consumer and returns its
