@@ -29,7 +29,7 @@ project.ext.bcAnchorsGlmBindings = {
             coordinate == spec.coordinate
         }
         if (candidates.size() != 1) throw new GradleException('Exact original archive missing/ambiguous: ' + spec.coordinate)
-        [coordinate: spec.coordinate, path: candidates.get(0).file.canonicalPath]
+        [coordinate: spec.coordinate, path: candidates.iterator().next().file.canonicalPath]
     }
     def declared = ['implementation', 'runtimeOnly', fixture.runtimeOnlyConfigurationName].collectMany { name ->
         configurations.getByName(name).allDependencies.findAll { it.group && it.version && !(it.group == 'net.minecraftforge' && it.name == 'forge') }
