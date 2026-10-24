@@ -17,11 +17,7 @@ rearming TRACE. Standalone stays native INFO; pack profile selects scoped DEBUG 
 `bc.playtest.level`. Common six-case and ticket-return-versus-ownership projection tests
 join the existing source/native ticket gates. Logging adds no ticket or save protocol.
 
-## Scope and authority
-
-This repository owns its mod-specific behavior and authoring inputs. Read [local instructions](AGENTS.md)
-and the [shared documentation/policy index](../../better-content-modpack/docs/README.md).
-
+## Scope
 
 Pack-owned Forge 1.20.1 mod providing seven magic-gated, power-buffered chunk anchors. Each active anchor keeps its centered 3x3 chunk area fully ticking and exposes an operator registry/teleport command.
 
@@ -214,4 +210,4 @@ Seven generated cases exercise each variant's real block entity and public power
 
 The remaining tests cover the actual Ars SourceManager payment, nine fully ticking Forge tickets across acquisition, starvation, redstone disable/re-enable and removal, and saved ownership/block identity round-trips. Ticket assertions inspect Forge's owned records by mod ID and block position, independently of chunks held open by the GameTest framework. Lifecycle coverage uses the shared ticket controller through a Flux anchor; ownership serialization is a save/load round-trip within one server process.
 
-During the active task, each server run keeps a fresh `build/gametest/<run-token>/` world, logs and `execution.json`. The reviewed `gametest/profiles/full.txt` must exactly match runtime discovery and successful completion. Missing, stale, empty, partial, duplicate, or failed evidence fails the task. Inspect failed directories during diagnosis and retain results/worlds/builds/caches across handoffs by default under the [shared retention policy](../../better-content-modpack/docs/policies/generated-data.md). Finishing activity deletes nothing; purge is separately gated.
+During the active task, each server run keeps a fresh `build/gametest/<run-token>/` world, logs and `execution.json`. The reviewed `gametest/profiles/full.txt` must exactly match runtime discovery and successful completion. Missing, stale, empty, partial, duplicate, or failed evidence fails the task.
