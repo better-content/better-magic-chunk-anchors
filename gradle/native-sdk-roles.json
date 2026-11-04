@@ -17,11 +17,11 @@
       }
     },
     {
-      "coordinate": "bettercontent.local.anchors:better-gameplay-notices:1.0.0",
+      "coordinate": "bettercontent.local.anchors:better-gameplay-notices:1.0.1",
       "role": "canonical_producer",
       "repository": "better-gameplay-notices",
       "mod_id": "better_gameplay_notices",
-      "artifact": "better-gameplay-notices-1.0.0.jar"
+      "artifact": "better-gameplay-notices-1.0.1.jar"
     },
     {
       "coordinate": "com.simibubi.create:create-1.20.1:6.0.8-291",

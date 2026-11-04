@@ -14,7 +14,7 @@ def token = new File(nativeRun.workingDirectory).name
 def receipt = new File(nativeRun.workingDirectory, 'canonical-custom-providers.json')
 def providersRequired = [
     [mod_id: 'better_compat_fixes', artifact: 'better-compat-fixes-0.1.9.jar', repository: 'better-compat-fixes', notation: 'bettercontent.local.anchors:better-compat-fixes:0.1.9'],
-    [mod_id: 'better_gameplay_notices', artifact: 'better-gameplay-notices-1.0.0.jar', repository: 'better-gameplay-notices', notation: 'bettercontent.local.anchors:better-gameplay-notices:1.0.0']
+    [mod_id: 'better_gameplay_notices', artifact: 'better-gameplay-notices-1.0.1.jar', repository: 'better-gameplay-notices', notation: 'bettercontent.local.anchors:better-gameplay-notices:1.0.1']
 ]
 // FG globally resolves __obfuscated configurations: unbound pure tasks must not register missing coordinates.
 if (binding.present) {
